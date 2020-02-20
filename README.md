@@ -13,6 +13,8 @@ This is a test project in pure ruby.
             address: string
     microservice: [post,user] 
     
+  Command  
+  
     ruby yaml2raml -f example.yml
     
 The result RAML can be use to genere Spring services
