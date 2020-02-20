@@ -1,5 +1,4 @@
 # yaml2raml
-YAML to RAML 
 This is a test project in pure ruby. 
 ##  Example YAML
 ### example.yaml
