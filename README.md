@@ -12,7 +12,11 @@ This is a test project in pure ruby.
             name: string
             address: string
     microservice: [post,user] 
+    
+    ruby yaml2raml -f example.yml
+    
 The result RAML can be use to genere Spring services
+
 # To Do List
 -   Restructure project code with best practices.
 -   Relationship one to many, many to many.
