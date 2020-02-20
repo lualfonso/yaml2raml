@@ -1,0 +1,28 @@
+#%RAML 1.0 Library
+
+types:<%  @file_yaml["entities"].each do |entity, model| %><% model.select{|key,model| !model.is_a?Hash }.each do |name , type| %><% name = (entity+"_"+name.gsub("*","").gsub("[]"," ")).camelize %><% type = type.split(" ")[0] %>
+  <%= name %>:
+    description: |
+      Description of <%= name %>.
+    type: <%= type =  type.start_with?("ref:") ?(type.split(":")[1].split(".")[0]+"_"+type.split(":")[1].split(".")[1]).camelize : type %><% if type=="number" %>
+    minimum: 1
+    maximum: 9999999999    <% end %>
+    <% if type=="string" %>minLength: 0
+    maxLength: 9999999999
+    <% end %><% end %><% end %>
+  <%  @file_yaml["entities"].each do |entity, model| %>
+  <%= entity.camelize %>:
+    (entity): true
+    type: object
+    description: |
+      Base entity for generate.
+    properties:
+      <% model.select{|key,model| !model.is_a?Hash }.each do |name , type| %><%= entity+"_"+name.gsub("*","").gsub("]","").gsub("[","").underscore %>:<% if type.include?("identity")%>
+        (identity): true<% end %><% if name.include?("*")%>
+        (pk): true<% end %><% if name.start_with?("ref:") %>
+        (reference):
+          entity: <%= type.split(":")[1].split(".")[0].camelize if type.start_with?("ref:") %>
+          field: <%=  type.split(":")[1].split(".")[0]+"_"+type.split(":")[1].split(".")[1].underscore if type.start_with?("ref:") %><% end %>
+        type: <%= (entity+"_"+name.gsub("*","")).camelize %>
+      <% end %>
+<% end %>

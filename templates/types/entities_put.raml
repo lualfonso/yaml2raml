@@ -1,0 +1,23 @@
+#%RAML 1.0 Library
+
+uses:
+  base: ./base.raml
+types:
+  <%= @entities %>PutData:
+    description:
+    type: object
+    properties:
+      data:
+        type: <%= @entity %>Put
+
+  <%= @entity %>Put:
+    type: object
+    description: |
+      Example description of the object
+    properties:
+      <% for attribute in @attributes %><%= attribute[:name].underscore %>?:
+        type: base.<%= attribute[:name] %>
+      <% end %>
+    example:
+      {
+      }

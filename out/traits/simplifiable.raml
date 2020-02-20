@@ -1,0 +1,18 @@
+#%RAML 1.0 Library
+usage: |
+  Apply to a GET method to limit the list of attributes to be returned
+
+  Field list is especified as a parameter, so, it's not possible to verify
+  if they really exists. Caution is required.
+
+traits:
+  SimplificationCriteria:
+    queryParameters:
+      fields?:
+        description: |
+          Allows to specify a list of comma separed fields to be included
+          in the response.
+
+          Valid values for fields: _<<fields>>_
+        type: string
+        pattern: ((<<fields>>),?)+

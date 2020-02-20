@@ -1,0 +1,212 @@
+#%RAML 1.0 Library
+types:
+  MockRequest:
+    properties:
+      headers:
+        description: >
+          Specifies the headers that a request must match in order to retrieve this mock.
+          Use a flat JSON object to specify header names (key) and header values (value).
+        type: object
+        required: false
+      path_params:
+        description: >
+          Specifies path parameters that a request must match in order to retrieve this
+          mock. Use a flat JSON object to specify path parameter names/path parameter
+          values.
+        type: object
+        required: false
+      query_params:
+        description: >
+          Specifies query parameters that a request must match in order to retrieve this
+          mock. Use a flat JSON object to specify query parameter names/query parameter
+          values.
+        type: object
+        required: false
+      body:
+        description: >
+          Specifies the body that a request must match in order to retrieve this mock.
+          It must be a valid JSON object.
+        type: object
+        required: false
+  MockResponse:
+    properties:
+      status_code:
+        description: >
+          Specifies the status code that should be returned in the response.
+        type: integer
+        required: true
+      headers:
+        description: >
+          Specifies the headers that should be returned in the response.
+          Use a flat JSON object to specify header names (key) and header values (value).
+        type: object
+        required: false
+      body:
+        description: >
+          Specifies the body that will be sent to the client when the request matches this
+          mock.
+        type: object
+        required: false
+  MockDefinition:
+    properties:
+      title:
+        description: A simple text that describes this mock.
+        type: string
+        required: false
+      country:
+        description: >
+          ISO 3166-1 alpha-2 code that describes the country where this mock is used.
+        type: string
+        required: false
+      request:
+        description: >
+          The expected request to return this mock's response.
+          This object might not need to be specified for very simple requests, such as
+          GET /resources.
+        type: MockRequest
+        required: false
+      response:
+        description: >
+          The response to return when the request matches the expected values.
+        type: MockResponse
+        required: true
+annotationTypes:
+  metadata0:
+    displayName: Metadata
+    description: Metadata for Governance.
+    allowedTargets: [API]
+    type: object
+    properties:
+      versao:
+        description: Metadata version.
+        type: number
+        required: true
+        example: 1.0
+      info:
+        description: Description of the document.
+        type: string
+        required: true
+        example: Metadata specification for the API domain of Prospects.
+      rotas:
+        type: array
+        items:
+          properties:
+            rota:
+              description: Resource URL.
+              type: string
+              example: /prospects
+            metodos:
+              type: array
+              items:
+                properties:
+                  metodo:
+                    description: HTTP method.
+                    type: string
+                    example: get
+                  nacionalidades:
+                    description: List of countries that expose the API.
+                    type: array
+                    items: string
+                  tags:
+                    type: array
+                    items: string
+                    required: true
+                  contatos:
+                    description: Contact information of people that have knowledge about the domain/route.
+                    type: array
+                    items:
+                      properties:
+                        tipo:
+                          description: Short text that describes contact information type.
+                          type: string
+                          required: true
+                          example: Email
+                        contato:
+                          description: Contact information (email, phone, name, ...).
+                          type: string
+                          required: true
+                          example: admin@itau-unibanco.com.br
+  requiredFor:
+    displayName: RequiredFor
+    description: |
+      Specifies the countries for which a property is required. Use ISO 3166-1
+      two-letter code to specify a country.
+
+      It is recommended that parsers ignore the `required` facet when
+      processing files annotated with this element. Every property of every
+      Data Type definition should use this annotation.
+    allowedTargets: [ TypeDeclaration ]
+    type: string[]
+    example: [ AR, PY, UY ]
+  countrySpecific:
+    displayName: CountrySpecific
+    description: |
+      Specifies the countries by which a resource is used. Use ISO 3166-1
+      two-letter code to specify a country.
+
+      When using this annotation for TypeDeclarations, its value should be
+      consistent with the value of the annotation `requiredFor`.
+    allowedTargets: [ TypeDeclaration, Resource, Method ]
+    type: string[]
+    example: [ AR, PY, UY ]
+  sandbox:
+    displayName: Sandbox
+    description: >
+      Specifies a request/response example (for mocking purposes).
+
+      This structure is divided in two main parts: the expected request and
+      the response. Whenever a request is made to the mock server, it will
+      be matched against the available expected requests. The best match will
+      determine the response that will be sent to the client.
+    allowedTargets: [ Method ]
+    type: array
+    items: MockDefinition
+  omitOnService:
+    displayName: OmitOnDispatch
+    description: >
+      Specifies fields to be omitted in the service 'book' object of API
+      Core. Parts that can be omitted are specified as follows:
+      - header: header.header_name
+      - body: body.field_name
+      Please note it is NOT possible to specify nested fields in the body. For
+      instance, "body.data.field1" is an invalid specification.
+    allowedTargets: [ Method ]
+    type: array
+    items: string
+    example: ["header.token_latam", "body.data"]
+  omitOnReqRes:
+    displayName: OmitOnReqRes
+    description: >
+      Specifies fields to be omitted in request/response log objects of
+      API Core. Parts that can be omitted are specified as follows:
+      - request header: headers.header_name
+      - request body field: body.field_name
+      - response body field: response.body.field_name
+      Please note it is possible to specify nested fields in the body. For
+      instance, "body.data.field1".
+    allowedTargets: [ Method ]
+    type: array
+    items: string
+    example: [
+      "headers.token_latam",
+      "body.data.password",
+      "body.data.complement.device_signature",
+      "response.body.data.token"
+    ]
+  entity:
+    type: object
+  identity:
+    type: boolean
+  pk:
+    type: boolean
+  reference:
+    properties:
+      entity: object
+      field: string
+  project:
+    properties:
+      group: string
+      artifact: string
+      name: string
+
+

@@ -1,0 +1,148 @@
+#%RAML 1.0 ResourceType
+
+usage: Use this type to define filterable list resources
+
+description: |
+  **Warning**
+  <ul>
+    <li>You can use a search parameter "q" to specify an advanced expression. This
+    expression can support nested expressions, ORs, etc.<p>
+    More details can be found in the attached documentation.<p>
+    The supported operators are:
+    <ol>
+      <li>
+        **or(expr1, expr2, ...)**, evaluates all comma separated expressions
+        under the OR operator rule.
+      </li>
+      <li>
+        **and(expr1, expr2, ...)**, evaluates all comma separated expressions
+        under the AND operator rule.
+      </li>
+      <li>
+        **eq(param, expr)**, evaluates the exact equality between the given
+        parameter and expression.
+      </li>
+      <li>
+        **gte(param, expr)**, evaluates if the given parameter is greater than
+        or equal to the given expression.
+      </li>
+      <li>
+        **lte(param, expr)**, evaluates if the given parameter is lower than
+        or equal to the given expression.
+      </li>
+      <li>
+        **gt(param, expr)**, evaluates if the given parameter is greater than
+        the given expression.
+      </li>
+      <li>
+        **lt(param, expr)**, evaluates if the given parameter is lower than
+        the given expression.
+      </li>
+      <li>
+        **ne(param, expr)**, evaluates if the given parameter is different from
+        the given expression.
+      </li>
+      <li>
+        **uc(param)**, returns the UPPERCASE version of the given parameter.
+        dada.
+      </li>
+      <li>
+        **lc(param)**, returns the LOWERCASE version of the given parameter.
+      </li>
+      <li>
+        **trim(param)**, returns the given parameter with no spaces at the
+        beggining and end.
+      </li>
+    </ol>
+    </li>
+  </ul>
+
+uses:
+  errorWarning: ../libraries/error_warning.raml
+
+head?:
+  headers:
+    log_id?:
+      description: Propagated identifier from top to bottom. Used to track errors or transactions
+  responses:
+    200:
+      description: One or more resource found
+      headers:
+        Content-Location:
+          description: Resource URI
+        Last-Modified:
+          description: Last update
+    204:
+      description: No resource found with specified criteria
+    400:
+      description: Non valid petition
+    422:
+      description: Unprocessable Entity
+    500:
+      description: Internal Error
+    501:
+      description: Not Implemented
+    503:
+      description: Unavailable Service
+get?:
+  headers:
+    log_id?:
+      description: Propagated identifier from top to bottom. Used to track errors or transactions
+  responses:
+    200:
+      headers:
+        Content-Location:
+          description: Resource URI
+    400:
+      description: Non valid petition
+      body:
+        application/json:
+          type: errorWarning.ErrorWarning
+    422:
+      description: Unprocessable Entity
+      body:
+        application/json:
+          type: errorWarning.ErrorWarning
+    500:
+      description: Internal Error
+    501:
+      description: Not Implemented
+    503:
+      description: Unavailable Service
+post?:
+  headers:
+    log_id?:
+      description: Propagated identifier from top to bottom. Used to track errors or transactions
+  responses:
+    201:
+      headers:
+        Content-Location:
+          description: Resource URI
+          type: string
+          example: <<baseUri>><<resourcePath>>/1
+    400:
+      description: Non valid petition
+      body:
+        application/json:
+          type: errorWarning.ErrorWarning
+    405:
+      description: Non valid parameters
+      body:
+        application/json:
+          type: errorWarning.ErrorWarning
+    409:
+      description: Resource alredy exists
+      body:
+        application/json:
+          type: errorWarning.ErrorWarning
+    422:
+      description: Unprocessable Entity
+      body:
+        application/json:
+          type: errorWarning.ErrorWarning
+    500:
+      description: Internal Error
+    501:
+      description: Not Implemented
+    503:
+      description: Unavailable Service

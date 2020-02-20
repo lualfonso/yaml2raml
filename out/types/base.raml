@@ -1,0 +1,133 @@
+#%RAML 1.0 Library
+
+types:
+  PostId:
+    description: |
+      Description of PostId.
+    type: number
+    minimum: 1
+    maximum: 9999999999    
+    
+  PostTitle:
+    description: |
+      Description of PostTitle.
+    type: string
+    minLength: 0
+    maxLength: 9999999999
+    
+  PostUser:
+    description: |
+      Description of PostUser.
+    type: UserId
+    
+  PostUserName:
+    description: |
+      Description of PostUserName.
+    type: UserName
+    
+  PostUserAge:
+    description: |
+      Description of PostUserAge.
+    type: UserAge
+    
+  PostUserAddress:
+    description: |
+      Description of PostUserAddress.
+    type: UserAddress
+    
+  UserId:
+    description: |
+      Description of UserId.
+    type: number
+    minimum: 1
+    maximum: 9999999999    
+    
+  UserAge:
+    description: |
+      Description of UserAge.
+    type: number
+    minimum: 1
+    maximum: 9999999999    
+    
+  UserName:
+    description: |
+      Description of UserName.
+    type: string
+    minLength: 0
+    maxLength: 9999999999
+    
+  UserAddress:
+    description: |
+      Description of UserAddress.
+    type: string
+    minLength: 0
+    maxLength: 9999999999
+    
+  CityId:
+    description: |
+      Description of CityId.
+    type: number
+    minimum: 1
+    maximum: 9999999999    
+    
+  CityName:
+    description: |
+      Description of CityName.
+    type: string
+    minLength: 0
+    maxLength: 9999999999
+    
+  
+  Post:
+    (entity): true
+    type: object
+    description: |
+      Base entity for generate.
+    properties:
+      post_id:
+        (identity): true
+        (pk): true
+        type: PostId
+      post_title:
+        type: PostTitle
+      post_user:
+        type: PostUser
+      post_user_name:
+        type: PostUserName
+      post_user_age:
+        type: PostUserAge
+      post_user_address:
+        type: PostUserAddress
+      
+
+  User:
+    (entity): true
+    type: object
+    description: |
+      Base entity for generate.
+    properties:
+      user_id:
+        (identity): true
+        (pk): true
+        type: UserId
+      user_age:
+        type: UserAge
+      user_name:
+        type: UserName
+      user_address:
+        type: UserAddress
+      
+
+  City:
+    (entity): true
+    type: object
+    description: |
+      Base entity for generate.
+    properties:
+      city_id:
+        (identity): true
+        (pk): true
+        type: CityId
+      city_name:
+        type: CityName
+      

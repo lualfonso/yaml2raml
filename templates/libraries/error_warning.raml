@@ -1,0 +1,72 @@
+#%RAML 1.0 Library
+types:
+  ErrorWarning:
+    type: object
+    description: |
+      Error (or warning) list container
+    properties:
+      messages: Message[]
+    example:
+      {
+          "messages": [
+              {
+                  "code": "101",
+                  "message": "Internal Error",
+                  "level": "WARNING",
+                  "details": [
+                      {
+                          "code": "-1",
+                          "message": "unavailable service"
+                      }
+                  ]
+              }
+          ]
+      }
+
+  Message:
+    type: object
+    description: |
+      Error (or Warning) info.
+    properties:
+      code:
+        description: |
+          Internal non-HTTP error code. This error code should have
+          a meaning or be relevant within the API's bounded context. It
+          shouldn't be simply the return code of an internal service call, those
+          could be included within *details* subsection
+        type: string
+      message:
+        description: |
+          Error description of the error
+        type: string
+      details?:
+        description: |
+          Additional details about the main return code. If present, should
+          include associated external call errors or warnings.
+        type: ErrorDetail[]
+      level:
+          description: |
+            Error clasification, must be one of:
+            - CRITICAL
+            - FATAL
+            - ERROR
+            - WARNING
+          type: string
+          enum:
+            - CRITICAL
+            - FATAL
+            - ERROR
+            - WARNING
+  ErrorDetail:
+    type: object
+    description: |
+      External call failure info.
+    properties:
+      code:
+        description: |
+          External call error code
+        type: string
+      message:
+        description: |
+          Error description, bypassed from the background callee
+        type: string

@@ -1,0 +1,33 @@
+#%RAML 1.0 Library
+
+uses:
+  base: ./base.raml
+types:
+  PostGetData:
+    description: |
+      One Post
+    type: object
+    properties:
+      data:
+        type: PostGet
+
+  PostGet:
+    type: object
+    description: |
+      Example description of the object.
+    properties:
+      post_id:
+        type: base.PostId
+      post_title:
+        type: base.PostTitle
+      post_user:
+        type: base.PostUser
+      post_user_name:
+        type: base.PostUserName
+      post_user_age:
+        type: base.PostUserAge
+      post_user_address:
+        type: base.PostUserAddress
+      
+    example:
+      {}

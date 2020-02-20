@@ -1,0 +1,136 @@
+#%RAML 1.0 ResourceType
+
+usage: Use this type for primary key accessed resources
+
+description: |
+  **Warning**
+  This resource allows to work with an unique resource. For this reason there are
+  not any search criteria further than **{<<resourceId>>}**.
+
+uses:
+  errorWarning: ../libraries/error_warning.raml
+head?:
+  headers:
+    log_id?:
+      description: Propagated identifier from top to bottom. Used to track errors or transactions
+  responses:
+    200:
+      headers:
+        Content-Location:
+          description: Resource URI
+        Last-Modified:
+          description: Last update
+          type: string
+          example: Wed, 21 Oct 2015 07:28:00 GMT
+        Cache-Control:
+          description: |
+            Activates caching and defines cache behavior through cache response directives.
+            Usually defines public or private (cacheable by proxy or not) and max-age for resource.
+            max-age: useful for files that never change
+            See http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html for more information.
+          type: string
+          example: private, max-age=31536000
+get:
+  headers:
+    log_id?:
+      description: Propagated identifier from top to bottom. Used to track errors or transactions
+  responses:
+    200:
+      headers:
+        Content-Location:
+          description: Resource URI
+        Cache-Control:
+          description: |
+            Activates caching and defines cache behavior through cache response directives.
+            Usually defines public or private (cacheable by proxy or not) and max-age for resource.
+            See http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html for more information.
+          type: string
+          example: private, max-age=31536000
+    400:
+      description: Non valid petition
+      body:
+        application/json:
+          type: errorWarning.ErrorWarning
+    422:
+      description: Unprocessable Entity
+      body:
+        application/json:
+          type: errorWarning.ErrorWarning
+    500:
+      description: Internal Error
+    501:
+      description: Not Implemented
+    503:
+      description: Unavailable Service
+patch?:
+  headers:
+    log_id?:
+      description: Propagated identifier from top to bottom. Used to track errors or transactions
+  responses:
+    200:
+      headers:
+        Content-Location:
+          description: Resource URI
+          type: string
+    400:
+      description: Non valid petition
+      body:
+        application/json:
+          type: errorWarning.ErrorWarning
+    405:
+      description: Non valid parameters
+      body:
+        application/json:
+          type: errorWarning.ErrorWarning
+    422:
+      description: Unprocessable Entity
+      body:
+        application/json:
+          type: errorWarning.ErrorWarning
+    500:
+      description: Internal Error
+    501:
+      description: Not Implemented
+    503:
+      description: Unavailable Service
+put?:
+  headers:
+    log_id?:
+      description: Propagated identifier from top to bottom. Used to track errors or transactions
+  responses:
+    200:
+      headers:
+        Content-Location:
+          description: Resource URI
+          type: string
+    400:
+      description: Non valid petition
+      body:
+        application/json:
+          type: errorWarning.ErrorWarning
+    405:
+      description: Non valid parameters
+      body:
+        application/json:
+          type: errorWarning.ErrorWarning
+    422:
+      description: Unprocessable Entity
+      body:
+        application/json:
+          type: errorWarning.ErrorWarning
+    500:
+      description: Internal Error
+    501:
+      description: Not Implemented
+    503:
+      description: Unavailable Service
+
+delete?:
+  headers:
+    log_id?:
+      description: Propagated identifier from top to bottom. Used to track errors or transactions
+  responses:
+    200:
+      description: Resource is deleted
+    404:
+      description: Resource not found

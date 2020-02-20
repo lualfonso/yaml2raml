@@ -1,0 +1,101 @@
+#%RAML 1.0 ResourceType
+
+usage: Use this type to define non filterable list resources
+
+description: |
+  **Warning**
+  This resource is non filterable because:
+  <ul>
+    <li>Low quantity of elements. They can be managed</li>
+    <li>Heavy process to get data. It should not be executed several times
+    just to filter data</li>
+  </ul>
+uses:
+  errorWarning: ../libraries/error_warning.raml
+
+head?:
+  headers:
+    log_id?:
+      description: Propagated identifier from top to bottom. Used to track errors or transactions
+  responses:
+    200:
+      description: One or more resource found
+      headers:
+        Content-Location:
+          description: Resource URI
+        Last-Modified:
+          description: Last update
+    204:
+      description: No resource found with specified criteria
+    400:
+      description: Non valid petition
+    422:
+      description: Unprocessable Entity
+    500:
+      description: Internal Error
+    501:
+      description: Not Implemented
+    503:
+      description: Unavailable Service
+get?:
+  headers:
+    log_id?:
+      description: Propagated identifier from top to bottom. Used to track errors or transactions
+  responses:
+    200:
+      headers:
+        Content-Location:
+          description: Resource URI
+    400:
+      description: Non valid petition
+      body:
+        application/json:
+          type: errorWarning.ErrorWarning
+    422:
+      description: Unprocessable Entity
+      body:
+        application/json:
+          type: errorWarning.ErrorWarning
+    500:
+      description: Internal Error
+    501:
+      description: Not Implemented
+    503:
+      description: Unavailable Service
+post?:
+  headers:
+    log_id?:
+      description: Propagated identifier from top to bottom. Used to track errors or transactions
+  responses:
+    201:
+      headers:
+        Content-Location:
+          description: Resource URI
+          type: string
+          example: <<baseUri>><<resourcePath>>/1
+    400:
+      description: Non valid petition
+      body:
+        application/json:
+          type: errorWarning.ErrorWarning
+    405:
+      description: Non valid parameters
+      body:
+        application/json:
+          type: errorWarning.ErrorWarning
+    409:
+      description: Resource alredy exists
+      body:
+        application/json:
+          type: errorWarning.ErrorWarning
+    422:
+      description: Unprocessable Entity
+      body:
+        application/json:
+          type: errorWarning.ErrorWarning
+    500:
+      description: Internal Error
+    501:
+      description: Not Implemented
+    503:
+      description: Unavailable Service

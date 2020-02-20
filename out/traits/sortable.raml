@@ -1,0 +1,23 @@
+#%RAML 1.0 Library
+usage: |
+  Apply to a method to add sorting support.
+
+  Field list is especified as a parameter, so, it's not possible to verify
+  if they really exists. Caution is required.
+traits:
+  SortCriteria:
+    description: Criterio de orden
+    queryParameters:
+      order_by?:
+        description: |
+          Allows to sort based on a list of specified aliases. The
+          direction it specifies order. Order's direction default
+          is ascending.
+
+          Valid values for order\_by are: _<<fields>>_
+        type: string
+        pattern: ((<<fields>>),?)+
+      order?:
+        description: |
+          specify the orientation's direction, must coincide
+          positionally with the aliases mentioned in ordery_by

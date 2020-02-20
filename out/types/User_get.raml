@@ -1,0 +1,29 @@
+#%RAML 1.0 Library
+
+uses:
+  base: ./base.raml
+types:
+  UserGetData:
+    description: |
+      One User
+    type: object
+    properties:
+      data:
+        type: UserGet
+
+  UserGet:
+    type: object
+    description: |
+      Example description of the object.
+    properties:
+      user_id:
+        type: base.UserId
+      user_age:
+        type: base.UserAge
+      user_name:
+        type: base.UserName
+      user_address:
+        type: base.UserAddress
+      
+    example:
+      {}

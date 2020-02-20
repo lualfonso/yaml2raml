@@ -1,0 +1,47 @@
+#%RAML 1.0 Library
+
+types:
+  pagination:
+    type: object
+    description: |
+      Query pagination information
+    properties:
+      links:
+        type: object
+        properties:
+          start: string
+          end: string
+          previous: string
+          next: string
+      page: integer
+      pages_total: integer
+      items_total: integer
+      page_size: integer
+
+traits:
+  PaginatedContent:
+      usage: Apply to any method returning a entity list that should be paginated
+      description: |
+        Adds query parameters to the request to get a paginated result.
+        **Note**: pagination starts from cero.
+      queryParameters:
+        page:
+          description: |
+            Page number to return. First page is always 1.
+            If you specify a page number, you must specify page size.
+          type: integer
+          minimum: 0
+          default: 0
+        page_size:
+          description: |
+            Items per page.
+          type: integer
+          required: false
+          minimum: 0
+          default: 20
+      responses:
+        206:
+          description: Partial result
+          body:
+            application/json:
+              type: pagination

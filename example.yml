@@ -1,0 +1,11 @@
+application:
+    name: usermcs
+entities:
+    user:
+        id*: number identity
+        age: number
+        name: string
+        address: string
+microservice: [post,user]
+
+

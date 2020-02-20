@@ -1,0 +1,15 @@
+#%RAML 1.0 Library
+usage: |
+  Apply to a GET method when the response is capable of being expanded.
+
+  Sections are especified as by parameter, so, it's not possible to verify
+  if they are really applicable. Further explanation for programmers should
+  be considered.
+traits:
+  ExpandableSupport:
+    queryParameters:
+      expand?:
+        description: |
+          Allows to expand related resources, valid values are: _<<sections>>_
+        type: string
+        pattern: ((<<sections>>),?)+

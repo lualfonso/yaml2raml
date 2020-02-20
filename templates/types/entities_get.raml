@@ -1,0 +1,29 @@
+#%RAML 1.0 Library
+uses:
+  base: ./base.raml
+types:
+  <%= @entities %>GetData:
+    description: |
+      Wrapper for a collection of <%= @entity %>
+    type: object
+    properties:
+      data:
+        type: <%= @entity %>Get[]
+  <%= @entity %>GetData:
+    description: |
+            Wrapper for a collection of <%= @entity %>
+    type: object
+    properties:
+       data:
+        type: <%= @entity %>Get
+
+
+  <%= @entity %>Get:
+    type: object
+    description: |
+      Example description of the object.
+    properties:
+      <% for attribute in @attributes %><%= attribute[:name].underscore %>:
+        type: base.<%= attribute[:name] %>
+      <% end %>
+    example:

@@ -1,0 +1,192 @@
+#%RAML 1.0 Library
+
+traits:
+  DateRange:
+    queryParameters:
+      gte_<<attribute>>:
+        description: |
+          Allows to filter by <<attribute>> with values greater than or equal to
+          a specified date. Expected date format is yyyy-mm-dd.
+        type: date-only
+        required: <<required>>
+      lte_<<attribute>>:
+        description: |
+          Allows to filter by <<attribute>> with values less than or equal to
+          a specified date. Expected date format is yyyy-mm-dd.
+        type: date-only
+        required: <<required>>
+
+  DateGreaterThan:
+    queryParameters:
+      gt_<<attribute>>:
+        description: |
+          Allows to filter by <<attribute>> with values greater than
+          a specified date. Expected date format is yyyy-mm-dd.
+        type: date-only
+        required: <<required>>
+
+  DateGreaterThanOrEqualsTo:
+    queryParameters:
+      gte_<<attribute>>:
+        description: |
+          Allows to filter by <<attribute>> with values greater than or equal to
+          a specified date. Expected date format is yyyy-mm-dd.
+        type: date-only
+        required: <<required>>
+
+  DateLessThan:
+    queryParameters:
+      lt_<<attribute>>:
+        description: |
+          Allows to filter by <<attribute>> with values less than
+          a specified date. Expected date format is yyyy-mm-dd.
+        type: date-only
+        required: <<required>>
+
+  DateLessThanOrEqualsTo:
+    queryParameters:
+      lte_<<attribute>>:
+        description: |
+          Allows to filter by <<attribute>> with values less than or equal to
+          a specified date. Expected date format is yyyy-mm-dd.
+        type: date-only
+        required: <<required>>
+
+  DateEqualsTo:
+    queryParameters:
+      <<attribute>>:
+        description: |
+          Allows to filter by <<attribute>> with values equal to
+          a specified date. Expected date format is yyyy-mm-dd.
+        type: date-only
+        required: <<required>>
+
+  NumberRange:
+    queryParameters:
+      gte_<<attribute>>:
+        description: |
+          Allows to filter by <<attribute>> with values greater than or equal to
+          a specified parameter.
+        type: number
+        required: <<required>>
+      lte_<<attribute>>:
+        description: |
+          Allows to filter by <<attribute>> with values less than or equal to
+          a specified parameter.
+        type: number
+        required: <<required>>
+
+  NumberGreaterThan:
+    queryParameters:
+      gt_<<attribute>>:
+        description: |
+          Allows to filter by <<attribute>> with values greater than
+          a specified parameter.
+        type: number
+        required: <<required>>
+
+  NumberGreaterThanOrEqualsTo:
+    queryParameters:
+      gte_<<attribute>>:
+        description: |
+          Allows to filter by <<attribute>> with values greater than or equal to
+          a specified parameter.
+        type: number
+        required: <<required>>
+
+  NumberLessThan:
+    queryParameters:
+      lt_<<attribute>>:
+        description: |
+          Allows to filter by <<attribute>> with values less than
+          a specified parameter.
+        type: number
+        required: <<required>>
+
+  NumberLessThanOrEqualsTo:
+    queryParameters:
+      lte_<<attribute>>:
+        description: |
+          Allows to filter by <<attribute>> with values less than or equal to
+          a specified parameter.
+        type: number
+        required: <<required>>
+
+  NumberEqualsTo:
+    queryParameters:
+      <<attribute>>:
+        description: |
+          Allows to filter by <<attribute>> with values equal to
+          a specified parameter.
+        type: number
+        required: <<required>>
+
+  TextStartsWith:
+    queryParameters:
+      sw_<<attribute>>:
+        description: |
+          Allows to filter by <<attribute>> with values that start with
+          a specified parameter (non case sensitive).
+        type: string
+        required: <<required>>
+
+  TextEndsWith:
+    queryParameters:
+      ew_<<attribute>>:
+        description: |
+          Allows to filter by <<attribute>> with values that end with
+          a specified parameter (non case sensitive).
+        type: string
+        required: <<required>>
+
+  TextEqualsTo:
+    queryParameters:
+      eq_<<attribute>>:
+        description: |
+          Allows to filter by <<attribute>> with values matching to
+          a specified parameter (non case sensitive).
+        type: string
+        required: <<required>>
+
+  TextEqualsToCaseSensitive:
+    queryParameters:
+      <<attribute>>:
+        description: |
+          Allows to filter by <<attribute>> with values matching to
+          a specified parameter (non case sensitive).
+        type: string
+        required: <<required>>
+
+  TextContains:
+    queryParameters:
+      cnt_<<attribute>>:
+        description: |
+          Allows to filter by <<attribute>> with values thant contain
+          a specified parameter (non case sensitive).
+        type: string
+        required: <<required>>
+
+  ValueInEnum:
+    queryParameters:
+      <<attribute>>:
+        description: |
+          Allows to filter by <<attribute>> listed in <<enum>>.
+        type: string
+        required: <<required>>
+        pattern: "((<<enum>>),?)+"
+
+  SortCriteria:
+    queryParameters:
+      order_by?:
+        description: |
+          Allows to sort based on a list of specified aliases. The
+          direction it specifies order. Order's direction default
+          is ascending.
+
+          Valid values for order\_by are: _<<fields>>_
+        type: string
+        pattern: ((<<fields>>),?)+
+      order?:
+        description: |
+          specify the orientation's direction, must coincide
+          positionally with the aliases mentioned in ordery_by
