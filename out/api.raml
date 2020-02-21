@@ -11,8 +11,8 @@ description: |
 version: v1
 (project):
     group: com.mcs
-    artifact: store
-    name: Store
+    artifact: usermcs
+    name: Usermcs
 mediaType: application/json
 protocols:
   - HTTP
@@ -28,13 +28,6 @@ baseUriParameters:
 uses:
   filterType: ./traits/filter_type.raml
   errorWarning: ./libraries/error_warning.raml
-  
-  PostsGet: ./types/Posts_get.raml
-  PostGet: ./types/Post_get.raml
-  PostsPost: ./types/Posts_post.raml
-  PostsPostId: ./types/Posts_postId.raml
-  PostsPut: ./types/Posts_put.raml
-  PostsPutId: ./types/Posts_putId.raml
   
   UsersGet: ./types/Users_get.raml
   UserGet: ./types/User_get.raml
@@ -56,97 +49,6 @@ resourceTypes:
   static_collection: !include resourceTypesMCS/static_collection.raml
   item: !include resourceTypesMCS/item.raml
  
-/posts:
-  (entity): base.Post
-  type: { simple_colleccion: { "baseUri": 'http://{host}:{port}/localhost/Posts/{version}' } }
-  description: |
-    
-  get:
-    description: |
-  
-    is:
-      [
-        filterType.TextContains: {attribute : name, required: false},
-        
-        sortable.SortCriteria: {fields: contact_date_time},
-        simplifiable.SimplificationCriteria: {fields : client_id | contact_date | reference},
-        paginatedContent.PaginatedContent
-      ]
-    responses:
-      200:
-        description: |
-          The request was successfully
-        body:
-          application/json:
-            type: PostsGet.PostsGetData
-
-
-  post:
-      body:
-          application/json:
-            description:  Customer request to create
-            type: PostsPost.PostsPostData
-      responses:
-       201:
-         description: |
-            The request was accepted.
-         body:
-          application/json:
-                  type: PostGet.PostGetData
-       405:
-         description: |
-            Invalid Parameters
-       409:
-         description: |
-            There is already a transfer request created with the channel reference number
-
-  /{post_id}:
-    type:  { item : { "resourceId" : 'post_id' } }
-    (entity): base.Post
-    get:
-      description: |
-        Gets the request associated with identified as part the url.
-      responses:
-        200:
-          description: |
-            Posts Found
-          body:
-            application/json:
-              type:  PostGet.PostGetData
-        400:
-          description: |
-            the request has an incorrect format
-        404:
-          description: |
-              Resource not found
-    put:
-      description: |
-        Update Posts
-      body:
-          application/json:
-            type: PostsPut.PostsPutData
-      responses:
-        200:
-          description: |
-            The request was update successfully
-          body:
-            application/json:
-              type:  PostGet.PostGetData
-        400:
-          description: |
-              The request has an incorrect format
-
-    delete:
-      description: |
-              Request to remove Customers
-      responses:
-        200:
-          description:  |
-              The request has bee successfull
-        404:
-          description: |
-              There is no transfer request associated with the specified identifier
-
 /users:
   (entity): base.User
   type: { simple_colleccion: { "baseUri": 'http://{host}:{port}/localhost/Users/{version}' } }

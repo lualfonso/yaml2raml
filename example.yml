@@ -6,6 +6,6 @@ entities:
         age: number
         name: string
         address: string
-microservice: [post,user]
+microservice: [user]
 
 
