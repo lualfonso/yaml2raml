@@ -68,33 +68,44 @@ def render_templates
         #    p "Creating file success" 
         end
 end
-Options = Struct.new(:name)
-op = OptionParser.new
-op.accept(Options) do |name|
-    name
-end
-
-op.on("-e name", Options) do |name|
-    @entity = name.camelize
-    @entities = @entity.pluralize
-    p "Generando RAML para la entidad: #{@entity}"
-end
-op.on("-m", "--m key:value, key2:value2", Array) do |params|
-
-    @model =  Hash[params.map {|p| p.split(":") }]
-    @model.each do |name , type|
-        identity = name.include?"*"
-        @entity_pk = name.gsub("*","").camelize unless !name.include?"*"
-        @attributes.push ({name: name.gsub("*","").camelize , type: type, identity: identity})
+def process_models
+    @models = {}
+    @file_yaml["entities"].each do |name, type|
+        process_struc name, type if type.is_a?Hash
     end
-    p "Modelo: #{@model}"
-    render_api
-    render_types
 end
-op.on("-f name" , Options) do |file|
+def process_struc parm_name, parm_type
+    
+    properties = {}
+    parm_type.each do |name, type|
+        properties[name] = {type: type}
+        properties[name] = {type: name} if type.is_a?Hash
+        process_struc (parm_name + "_" + name), type if type.is_a?Hash
+    end
+    @models[parm_name] = properties
+end
+def process_types
+    @model_types = {}
+    @file_yaml["entities"].each do |name, type|
+        process_struc_types name, type
+    end
+    p @model_types
+end
+
+def process_struc_types parm_name, parm_type
+    parm_type.each do |name, type|
+        @model_types[parm_name + "_" + name] = type unless type.is_a?Hash
+        process_struc_types (parm_name + "_" + name), type if type.is_a?Hash
+    end
+
+end
+op = OptionParser.new
+op.on("-f name") do |file|
     p "creando RAML para #{file}"
     @file_yaml = YAML.load_file(file) 
     @artifact = @file_yaml["application"]["name"]
+    process_models
+    process_types
     @file_yaml["microservice"].each do |entity|
         @entity = entity.camelize
         @entities = @entity.pluralize
@@ -109,6 +120,7 @@ op.on("-f name" , Options) do |file|
     end
     render_api
     render_templates
+
     p "RAML para #{file} ha sido creado exitosamente."
 end
 op.parse!

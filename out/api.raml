@@ -11,13 +11,13 @@ description: |
 version: v1
 (project):
     group: com.mcs
-    artifact: usermcs
-    name: Usermcs
+    artifact: store
+    name: Store
 mediaType: application/json
 protocols:
   - HTTP
   - HTTPS
-baseUri: 'http://{host}:{port}/localhost/Users/{version}'
+baseUri: 'http://{host}:{port}/localhost/Invoices/{version}'
 
 baseUriParameters:
   host:
@@ -29,12 +29,12 @@ uses:
   filterType: ./traits/filter_type.raml
   errorWarning: ./libraries/error_warning.raml
   
-  UsersGet: ./types/Users_get.raml
-  UserGet: ./types/User_get.raml
-  UsersPost: ./types/Users_post.raml
-  UsersPostId: ./types/Users_postId.raml
-  UsersPut: ./types/Users_put.raml
-  UsersPutId: ./types/Users_putId.raml
+  InvoicesGet: ./types/Invoices_get.raml
+  InvoiceGet: ./types/Invoice_get.raml
+  InvoicesPost: ./types/Invoices_post.raml
+  InvoicesPostId: ./types/Invoices_postId.raml
+  InvoicesPut: ./types/Invoices_put.raml
+  InvoicesPutId: ./types/Invoices_putId.raml
   
 
   sortable: ./traits/sortable.raml
@@ -49,9 +49,9 @@ resourceTypes:
   static_collection: !include resourceTypesMCS/static_collection.raml
   item: !include resourceTypesMCS/item.raml
  
-/users:
-  (entity): base.User
-  type: { simple_colleccion: { "baseUri": 'http://{host}:{port}/localhost/Users/{version}' } }
+/invoices:
+  (entity): base.Invoice
+  type: { simple_colleccion: { "baseUri": 'http://{host}:{port}/localhost/Invoices/{version}' } }
   description: |
     
   get:
@@ -71,21 +71,21 @@ resourceTypes:
           The request was successfully
         body:
           application/json:
-            type: UsersGet.UsersGetData
+            type: InvoicesGet.InvoicesGetData
 
 
   post:
       body:
           application/json:
             description:  Customer request to create
-            type: UsersPost.UsersPostData
+            type: InvoicesPost.InvoicesPostData
       responses:
        201:
          description: |
             The request was accepted.
          body:
           application/json:
-                  type: UserGet.UserGetData
+                  type: InvoiceGet.InvoiceGetData
        405:
          description: |
             Invalid Parameters
@@ -93,19 +93,19 @@ resourceTypes:
          description: |
             There is already a transfer request created with the channel reference number
 
-  /{user_id}:
-    type:  { item : { "resourceId" : 'user_id' } }
-    (entity): base.User
+  /{invoice_id}:
+    type:  { item : { "resourceId" : 'invoice_id' } }
+    (entity): base.Invoice
     get:
       description: |
         Gets the request associated with identified as part the url.
       responses:
         200:
           description: |
-            Users Found
+            Invoices Found
           body:
             application/json:
-              type:  UserGet.UserGetData
+              type:  InvoiceGet.InvoiceGetData
         400:
           description: |
             the request has an incorrect format
@@ -114,17 +114,17 @@ resourceTypes:
               Resource not found
     put:
       description: |
-        Update Users
+        Update Invoices
       body:
           application/json:
-            type: UsersPut.UsersPutData
+            type: InvoicesPut.InvoicesPutData
       responses:
         200:
           description: |
             The request was update successfully
           body:
             application/json:
-              type:  UserGet.UserGetData
+              type:  InvoiceGet.InvoiceGetData
         400:
           description: |
               The request has an incorrect format

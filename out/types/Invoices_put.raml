@@ -3,26 +3,20 @@
 uses:
   base: ./base.raml
 types:
-  UsersPutData:
+  InvoicesPutData:
     description:
     type: object
     properties:
       data:
-        type: UserPut
+        type: InvoicePut
 
-  UserPut:
+  InvoicePut:
     type: object
     description: |
       Example description of the object
     properties:
-      user_id?:
-        type: base.UserId
-      user_age?:
-        type: base.UserAge
-      user_name?:
-        type: base.UserName
-      user_address?:
-        type: base.UserAddress
+      invoice_id?:
+        type: base.InvoiceId
       
     example:
       {

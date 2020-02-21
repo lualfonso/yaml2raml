@@ -1,49 +1,82 @@
 #%RAML 1.0 Library
 
 types:
-  UserId:
+  InvoiceId:
     description: |
-      Description of UserId.
+      Description of InvoiceId.
     type: number
     minimum: 1
     maximum: 9999999999    
     
-  UserAge:
+  InvoiceDetailId:
     description: |
-      Description of UserAge.
+      Description of InvoiceDetailId.
     type: number
     minimum: 1
     maximum: 9999999999    
     
-  UserName:
+  InvoiceDetailProductId:
     description: |
-      Description of UserName.
-    type: string
-    minLength: 0
-    maxLength: 9999999999
+      Description of InvoiceDetailProductId.
+    type: number
     
-  UserAddress:
+  InvoiceDetailQuantity:
     description: |
-      Description of UserAddress.
+      Description of InvoiceDetailQuantity.
+    type: number
+    minimum: 1
+    maximum: 9999999999    
+    
+  ProductId:
+    description: |
+      Description of ProductId.
+    type: number
+    minimum: 1
+    maximum: 9999999999    
+    
+  ProductDescription:
+    description: |
+      Description of ProductDescription.
     type: string
     minLength: 0
     maxLength: 9999999999
     
   
-  User:
+  InvoiceDetail:
     (entity): true
-    type: object
     description: |
       Base entity for generate.
     properties:
-      user_id:
-        (identity): true
+      id:
         (pk): true
-        type: UserId
-      user_age:
-        type: UserAge
-      user_name:
-        type: UserName
-      user_address:
-        type: UserAddress
+        (identity): true
+        type: InvoiceDetailId
+      product_id:
+        type: InvoiceDetailProductId
+      quantity:
+        type: InvoiceDetailQuantity
+      
+
+  Invoice:
+    (entity): true
+    description: |
+      Base entity for generate.
+    properties:
+      id:
+        (pk): true
+        (identity): true
+        type: InvoiceId
+      
+
+  Product:
+    (entity): true
+    description: |
+      Base entity for generate.
+    properties:
+      id:
+        (pk): true
+        (identity): true
+        type: ProductId
+      description:
+        type: ProductDescription
       

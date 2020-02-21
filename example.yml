@@ -1,11 +1,19 @@
 application:
-    name: usermcs
+    name: store
+microservice: [invoice]
+
 entities:
-    user:
+    invoice:
         id*: number identity
-        age: number
-        name: string
-        address: string
-microservice: [user]
+        detail:
+            id*: number
+            product_id: ref:product.id
+            quantity: number
+    product:
+        id*: number
+        description: string
+
+
+
 
 
