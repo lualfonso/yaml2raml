@@ -3,24 +3,24 @@
 uses:
   base: ./base.raml
 types:
-  InvoicesPutData:
+  ClientsPutData:
     description:
     type: object
     properties:
       data:
-        type: InvoicePut
+        type: ClientPut
 
-  InvoicePut:
+  ClientPut:
     type: object
     description: |
       Example description of the object
     properties:
-      invoice_id?:
-        type: base.InvoiceId
-      invoice_date?:
-        type: base.InvoiceDate
-      invoice_client?:
-        type: base.InvoiceClient
+      client_id?:
+        type: base.ClientId
+      client_name?:
+        type: base.ClientName
+      client_age?:
+        type: base.ClientAge
       
     example:
       {

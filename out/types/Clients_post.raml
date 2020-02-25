@@ -3,22 +3,25 @@
 uses:
   base: ./base.raml
 types:
-  <%= @entities %>PostDataId:
+  ClientsPostData:
     description:
     type: object
     properties:
       data:
-        type: <%= @entity %>PostId
+        type: ClientPost
 
-  <%= @entity %>PostId:
+  ClientPost:
     type: object
     description: |
       Example description of the object.
     properties:
-      <% for attribute in @attributes %><%= attribute[:name].underscore %>?:
-        type: base.<%= attribute[:name] %>
-      <% end %>
+      client_id?:
+        type: base.ClientId
+      client_name?:
+        type: base.ClientName
+      client_age?:
+        type: base.ClientAge
+      
     example:
       {
-
       }

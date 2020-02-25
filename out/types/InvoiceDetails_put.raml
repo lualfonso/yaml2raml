@@ -1,0 +1,27 @@
+#%RAML 1.0 Library
+
+uses:
+  base: ./base.raml
+types:
+  InvoiceDetailsPutData:
+    description:
+    type: object
+    properties:
+      data:
+        type: InvoiceDetailPut
+
+  InvoiceDetailPut:
+    type: object
+    description: |
+      Example description of the object
+    properties:
+      invoice_detail_invoice_id?:
+        type: base.InvoiceDetailInvoiceId
+      invoice_detail_id?:
+        type: base.InvoiceDetailId
+      invoice_detail_amount?:
+        type: base.InvoiceDetailAmount
+      
+    example:
+      {
+      }

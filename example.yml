@@ -1,17 +1,23 @@
 application:
     name: store
-microservice: [invoice]
+microservice: [invoice,product]
 
 entities:
     invoice:
         id*: number identity
+        date: date
+        client: ref:client.id
         detail:
             id*: number
-            product_id: ref:product.id
-            quantity: number
+            amount: number
     product:
-        id*: number
+        id*: number identity
         description: string
+    client:
+        id*: number
+        name: string
+        age: number
+
 
 
 

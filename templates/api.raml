@@ -28,13 +28,11 @@ baseUriParameters:
 uses:
   filterType: ./traits/filter_type.raml
   errorWarning: ./libraries/error_warning.raml
-  <%  @file_yaml["microservice"].each do |entity| %><%   entity = entity.camelize %><%  entities = entity.pluralize %>
+  <% @models.each do |entity,props| %><%   entity = entity.camelize %><%  entities = entity.pluralize %>
   <%= entities %>Get: ./types/<%= entities %>_get.raml
   <%= entity %>Get: ./types/<%= entity %>_get.raml
   <%= entities %>Post: ./types/<%= entities %>_post.raml
-  <%= entities %>PostId: ./types/<%= entities %>_postId.raml
   <%= entities %>Put: ./types/<%= entities %>_put.raml
-  <%= entities %>PutId: ./types/<%= entities %>_putId.raml
   <% end %>
 
   sortable: ./traits/sortable.raml
@@ -48,14 +46,16 @@ resourceTypes:
   simple_colleccion: !include resourceTypesMCS/simple_collection.raml
   static_collection: !include resourceTypesMCS/static_collection.raml
   item: !include resourceTypesMCS/item.raml
- <%  @file_yaml["microservice"].each do |entity| %><%  entity_camelize = entity.camelize %><%  entities = entity_camelize.pluralize %>
+ <%  @resources.each do |entity,sub_entity| %><%  entity_camelize = entity.camelize %><%  entities = entity_camelize.pluralize %><%  parent = entity_camelize %>  
 /<%= entities.downcase %>:
-  (entity): base.<%= entity.capitalize()  %>
+  (table): 
+    name: base.<%= entity.capitalize()  %>
   type: { simple_colleccion: { "baseUri": 'http://{host}:{port}/<%= @baseUri %>/<%= entities %>/{version}' } }
   description: |
     
   get:
     description: |
+    
   
     is:
       [
@@ -95,7 +95,8 @@ resourceTypes:
 
   /{<%= pk =  entity.downcase+"_"+@file_yaml["entities"][entity].keys.select{|name| name.include?("*") }[0].gsub("*","") %>}:
     type:  { item : { "resourceId" : '<%= pk %>' } }
-    (entity): base.<%= entity.capitalize()  %>
+    (table):
+      name: base.<%= entity.capitalize()  %>
     get:
       description: |
         Gets the request associated with identified as part the url.
@@ -139,4 +140,100 @@ resourceTypes:
         404:
           description: |
               There is no transfer request associated with the specified identifier
+ <% sub_entity[:domain].each do |entity,sub_entity| %><%  entity_camelize = parent + entity.camelize %><%  entities = entity.camelize.pluralize %>  
+  /<%= entities.downcase %>:
+    (table): 
+      name: base.<%= parent + entity.capitalize()  %>
+    type: { simple_colleccion: { "baseUri": 'http://{host}:{port}/<%= @baseUri %>/<%= entities %>/{version}' } }
+    description: |
+      
+    get:
+      description: |
+      
+    
+      is:
+        [
+          <% for filter in filters %>filterType.<%= filter[:filterType] %>: {attribute : <%= filter[:attribute] %>, required: <%= filter[:required] %>},<% end %>
+          
+          sortable.SortCriteria: {fields: contact_date_time},
+          simplifiable.SimplificationCriteria: {fields : client_id | contact_date | reference},
+          paginatedContent.PaginatedContent
+        ]
+      responses:
+        200:
+          description: |
+            The request was successfully
+          body:
+            application/json:
+              type: <%= entities %>Get.<%= entities %>GetData
+
+
+    post:
+        body:
+            application/json:
+              description:  Customer request to create
+              type: <%= entities %>Post.<%= entities %>PostData
+        responses:
+          201:
+            description: |
+                The request was accepted.
+            body:
+              application/json:
+                      type: <%= entity_camelize %>Get.<%= entity_camelize %>GetData
+          405:
+            description: |
+                Invalid Parameters
+          409:
+            description: |
+                There is already a transfer request created with the channel reference number
+
+    /{<%= pk =  entity.downcase+"_"+sub_entity[:pk].gsub("*","") %>}:
+      type:  { item : { "resourceId" : '<%= pk %>' } }
+      (table):
+        name: base.<%= parent + entity.capitalize()  %>
+      get:
+        description: |
+          Gets the request associated with identified as part the url.
+        responses:
+          200:
+            description: |
+              <%= entities %> Found
+            body:
+              application/json:
+                type:  <%= entity_camelize %>Get.<%= entity_camelize %>GetData
+          400:
+            description: |
+              the request has an incorrect format
+          404:
+            description: |
+                Resource not found
+      put:
+        description: |
+          Update <%= entities %>
+        body:
+            application/json:
+              type: <%= entities %>Put.<%= entities %>PutData
+        responses:
+          200:
+            description: |
+              The request was update successfully
+            body:
+              application/json:
+                type:  <%= entity_camelize %>Get.<%= entity_camelize %>GetData
+          400:
+            description: |
+                The request has an incorrect format
+
+      delete:
+        description: |
+                Request to remove Customers
+        responses:
+          200:
+            description:  |
+                The request has bee successfull
+          404:
+            description: |
+                There is no transfer request associated with the specified identifier
+  <% end %>
+
 <% end %>

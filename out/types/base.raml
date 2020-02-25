@@ -8,6 +8,23 @@ types:
     minimum: 1
     maximum: 9999999999    
     
+  InvoiceDate:
+    description: |
+      Description of InvoiceDate.
+    type: date
+    
+  InvoiceClient:
+    description: |
+      Description of InvoiceClient.
+    type: ClientId
+    
+  InvoiceDetailInvoiceId:
+    description: |
+      Description of InvoiceDetailInvoiceId.
+    type: number
+    minimum: 1
+    maximum: 9999999999    
+    
   InvoiceDetailId:
     description: |
       Description of InvoiceDetailId.
@@ -15,14 +32,9 @@ types:
     minimum: 1
     maximum: 9999999999    
     
-  InvoiceDetailProductId:
+  InvoiceDetailAmount:
     description: |
-      Description of InvoiceDetailProductId.
-    type: number
-    
-  InvoiceDetailQuantity:
-    description: |
-      Description of InvoiceDetailQuantity.
+      Description of InvoiceDetailAmount.
     type: number
     minimum: 1
     maximum: 9999999999    
@@ -41,42 +53,98 @@ types:
     minLength: 0
     maxLength: 9999999999
     
+  ClientId:
+    description: |
+      Description of ClientId.
+    type: number
+    minimum: 1
+    maximum: 9999999999    
+    
+  ClientName:
+    description: |
+      Description of ClientName.
+    type: string
+    minLength: 0
+    maxLength: 9999999999
+    
+  ClientAge:
+    description: |
+      Description of ClientAge.
+    type: number
+    minimum: 1
+    maximum: 9999999999    
+    
   
   InvoiceDetail:
-    (entity): true
+    (table):
+      name: invoice_detail
+    type: object
     description: |
       Base entity for generate.
     properties:
+      invoice_id:
+        (pk):
+          identity: false
+        (fk):
+          table: invoice
+          column: id
+        type: InvoiceDetailInvoiceId
       id:
-        (pk): true
-        (identity): true
+        (pk):
+          identity: false
         type: InvoiceDetailId
-      product_id:
-        type: InvoiceDetailProductId
-      quantity:
-        type: InvoiceDetailQuantity
+      amount:
+        type: InvoiceDetailAmount
       
 
   Invoice:
-    (entity): true
+    (table):
+      name: invoice
+    type: object
     description: |
       Base entity for generate.
     properties:
       id:
-        (pk): true
-        (identity): true
+        (pk):
+          identity: true
         type: InvoiceId
+      date:
+        type: InvoiceDate
+      client:
+        (fk):
+          table: client
+          column: id
+        type: InvoiceClient
       
 
   Product:
-    (entity): true
+    (table):
+      name: product
+    type: object
     description: |
       Base entity for generate.
     properties:
       id:
-        (pk): true
-        (identity): true
+        (pk):
+          identity: true
         type: ProductId
       description:
         type: ProductDescription
+      
+
+  Client:
+    (table):
+      name: client
+    type: object
+    description: |
+      Base entity for generate.
+    properties:
+      id:
+        (pk):
+          identity: false
+        type: ClientId
+      name:
+        type: ClientName
+      age:
+        type: ClientAge
       
