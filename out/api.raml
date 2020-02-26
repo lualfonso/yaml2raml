@@ -159,7 +159,7 @@ resourceTypes:
   /details:
     (table): 
       name: base.InvoiceDetail
-    type: { simple_colleccion: { "baseUri": 'http://{host}:{port}/localhost/Details/{version}' } }
+    type: { simple_colleccion: { "baseUri": 'http://{host}:{port}/localhost/InvoiceDetails/{version}' } }
     description: |
       
     get:
@@ -180,14 +180,14 @@ resourceTypes:
             The request was successfully
           body:
             application/json:
-              type: DetailsGet.DetailsGetData
+              type: InvoiceDetailsGet.InvoiceDetailsGetData
 
 
     post:
         body:
             application/json:
               description:  Customer request to create
-              type: DetailsPost.DetailsPostData
+              type: InvoiceDetailsPost.InvoiceDetailsPostData
         responses:
           201:
             description: |
@@ -212,7 +212,7 @@ resourceTypes:
         responses:
           200:
             description: |
-              Details Found
+              InvoiceDetails Found
             body:
               application/json:
                 type:  InvoiceDetailGet.InvoiceDetailGetData
@@ -224,10 +224,10 @@ resourceTypes:
                 Resource not found
       put:
         description: |
-          Update Details
+          Update InvoiceDetails
         body:
             application/json:
-              type: DetailsPut.DetailsPutData
+              type: InvoiceDetailsPut.InvoiceDetailsPutData
         responses:
           200:
             description: |

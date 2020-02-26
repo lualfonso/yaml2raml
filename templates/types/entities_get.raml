@@ -24,6 +24,6 @@ types:
       Example description of the object.
     properties:
       <% for attribute in @attributes %><%= attribute[:name].underscore %>:
-        type: base.<%= attribute[:name] %>
+        type: base.<%= @entity %><%= attribute[:name] %>
       <% end %>
     example:

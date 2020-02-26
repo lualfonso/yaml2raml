@@ -98,7 +98,7 @@ def process_entities_struc parm_name, parm_type, properties
     properties_default = {}
     properties_default = properties_default.merge(properties)
     parm_type.select{|name, type| name.include?"*" }.each do |name, type|
-        properties_default[parm_name + "_" + name] = "ref:#{parm_name}.#{name.gsub("*","")}" 
+        properties_default[name] = "ref:#{parm_name}.#{name.gsub("*","")}" 
     end
     parm_type.each do |name, type|
         properties[name] = type unless type.is_a?Hash
@@ -120,7 +120,7 @@ def process_struc_types parm_name, parm_type, defaults
     end
     parm_type.each do |name, type|
         @model_types[parm_name + "_" + name] = type unless type.is_a?Hash
-        defaults[parm_name + "_" + name] = type if name.include?"*"
+        defaults[name] = type if name.include?"*"
         process_struc_types (parm_name + "_" + name), type,defaults  if type.is_a?Hash
     end
     p defaults
@@ -139,7 +139,7 @@ op.on("-f name") do |file|
         props.each do |name , type|
             if !type.is_a?(Hash)
             @entity_pk = (entity+"_"+name.gsub("*","").gsub("[]","")).camelize if name.include?"*"
-            @attributes.push ({pk: name.include?("*")  , name: (entity+"_"+name.gsub("*","").gsub("[]","")).camelize , type: type.split(" ")[0], identity: type.include?("identity") })
+            @attributes.push ({pk: name.include?("*")  , name: (name.gsub("*","").gsub("[]","")).camelize , type: type.split(" ")[0], identity: type.include?("identity") })
             end
         end
         render_types
