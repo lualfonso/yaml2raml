@@ -187,7 +187,7 @@ resourceTypes:
             description: |
                 There is already a transfer request created with the channel reference number
 
-    /{<%= pk =  sub_entity[:pk].gsub("*","") %>}:
+    /{<%= pk = parent.underscore + "_" + sub_entity[:pk].gsub("*","") %>}:
       type:  { item : { "resourceId" : '<%= pk %>' } }
       (table):
         name: base.<%= parent + entity.capitalize()  %>

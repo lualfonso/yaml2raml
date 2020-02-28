@@ -202,8 +202,8 @@ resourceTypes:
             description: |
                 There is already a transfer request created with the channel reference number
 
-    /{detail_id}:
-      type:  { item : { "resourceId" : 'detail_id' } }
+    /{invoice_detail_id}:
+      type:  { item : { "resourceId" : 'invoice_detail_id' } }
       (table):
         name: base.InvoiceDetail
       get:

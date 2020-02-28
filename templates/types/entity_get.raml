@@ -16,8 +16,8 @@ types:
     description: |
       Example description of the object.
     properties:
-      <% for attribute in @attributes %><%= attribute[:name].underscore %>:
-        type: base.<%= @entity %><%= attribute[:name] %>
+      <% for attribute in @attributes %><%= attribute[:name].split(":").last %>:
+        type: base.<%= attribute[:name].split(":").first %>
       <% end %>
     example:
       {}

@@ -21,7 +21,6 @@ def render_api
         @mediaType = @default["mediaType"] 
         @baseUri = @default["baseUri"] 
         @group = @default["group"]
-        p "Loading default values success" 
     @domain = @default["domain"]
     files =  Dir.glob("templates/**/*.raml")
     
@@ -81,9 +80,9 @@ def _resources
     @resources = {}
 
     @file_yaml["entities"].each do |name, props|   
-        @resources[name] = process_resources(name,props)
+       p @resources[name] = process_resources(name,props)
     end
-    p @resources
+    @resources
 end
 def process_resources  name,props
         resource = {}  
@@ -92,17 +91,22 @@ def process_resources  name,props
             pk = type_name if type_name.include?"*"
             resource[type_name] = process_resources(type_name,type_props) if type_props.is_a?Hash
         end
-        {domain:resource,  pk:pk}
+        {domain:resource,  pk:name +"_" + pk}
 end
 def process_entities_struc parm_name, parm_type, properties
     properties_default = {}
     properties_default = properties_default.merge(properties)
     parm_type.select{|name, type| name.include?"*" }.each do |name, type|
-        properties_default[name] = "ref:#{parm_name}.#{name.gsub("*","")}" 
+        properties_default[(parm_name + "_" +name).gsub("[]","").camelize + ":"+ (parm_name + "_"+name).underscore.gsub("*","")] = "ref:#{parm_name}.#{name.gsub("*","")}" 
     end
     parm_type.each do |name, type|
-        properties[name] = type unless type.is_a?Hash
-        process_entities_struc((parm_name + "_" + name), type, properties_default) if type.is_a?Hash
+
+        if type.is_a?Hash
+            process_entities_struc((parm_name + "_" + name), type, properties_default) 
+        else
+            properties[(parm_name + "_" +name).gsub("[]","").camelize + ":" +name.underscore.gsub("*","")] = type 
+        end
+
     end
     @models[parm_name] = properties
 end
@@ -111,19 +115,19 @@ def process_entities_types
     @file_yaml["entities"].each do |name, type|
         process_struc_types name, type, {}
     end
-    p @model_types
+    @model_types
 end
 
 def process_struc_types parm_name, parm_type, defaults
     defaults.each do |name, type|
-        @model_types[parm_name + "_" + name] = type unless type.is_a?Hash
+        @model_types[name] = type unless type.is_a?Hash
     end
     parm_type.each do |name, type|
         @model_types[parm_name + "_" + name] = type unless type.is_a?Hash
         defaults[name] = type if name.include?"*"
         process_struc_types (parm_name + "_" + name), type,defaults  if type.is_a?Hash
     end
-    p defaults
+    defaults
 end
 op = OptionParser.new
 op.on("-f name") do |file|
@@ -139,7 +143,7 @@ op.on("-f name") do |file|
         props.each do |name , type|
             if !type.is_a?(Hash)
             @entity_pk = (entity+"_"+name.gsub("*","").gsub("[]","")).camelize if name.include?"*"
-            @attributes.push ({pk: name.include?("*")  , name: (name.gsub("*","").gsub("[]","")).camelize , type: type.split(" ")[0], identity: type.include?("identity") })
+            @attributes.push ({pk: name.include?("*")  , name: (name.gsub("*","").gsub("[]","")) , type: type.split(" ")[0], identity: type.include?("identity") })
             end
         end
         render_types

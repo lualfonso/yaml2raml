@@ -1,9 +1,9 @@
 #%RAML 1.0 Library
 
 types:
-  InvoiceInvoiceId:
+  InvoiceId:
     description: |
-      Description of InvoiceInvoiceId.
+      Description of InvoiceId.
     type: number
     minimum: 1
     maximum: 9999999999    
@@ -16,18 +16,18 @@ types:
   InvoiceClient:
     description: |
       Description of InvoiceClient.
-    type: ClientClientId
+    type: ClientId
     
-  InvoiceDetailInvoiceId:
+  Id:
     description: |
-      Description of InvoiceDetailInvoiceId.
+      Description of Id.
     type: number
     minimum: 1
     maximum: 9999999999    
     
-  InvoiceDetailDetailId:
+  InvoiceDetailId:
     description: |
-      Description of InvoiceDetailDetailId.
+      Description of InvoiceDetailId.
     type: number
     minimum: 1
     maximum: 9999999999    
@@ -39,9 +39,9 @@ types:
     minimum: 1
     maximum: 9999999999    
     
-  ProductProductId:
+  ProductId:
     description: |
-      Description of ProductProductId.
+      Description of ProductId.
     type: number
     minimum: 1
     maximum: 9999999999    
@@ -53,9 +53,9 @@ types:
     minLength: 0
     maxLength: 9999999999
     
-  ClientClientId:
+  ClientId:
     description: |
-      Description of ClientClientId.
+      Description of ClientId.
     type: number
     minimum: 1
     maximum: 9999999999    
@@ -87,12 +87,12 @@ types:
           identity: false
         (fk):
           table: invoice
-          column: invoice_id
-        type: InvoiceDetailInvoiceId
-      detail_id:
+          column: id
+        type: InvoiceId
+      id:
         (pk):
           identity: false
-        type: InvoiceDetailDetailId
+        type: InvoiceDetailId
       amount:
         type: InvoiceDetailAmount
       
@@ -104,16 +104,16 @@ types:
     description: |
       Base entity for generate.
     properties:
-      invoice_id:
+      id:
         (pk):
           identity: false
-        type: InvoiceInvoiceId
+        type: InvoiceId
       date:
         type: InvoiceDate
       client:
         (fk):
           table: client
-          column: client_id
+          column: id
         type: InvoiceClient
       
 
@@ -124,10 +124,10 @@ types:
     description: |
       Base entity for generate.
     properties:
-      product_id:
+      id:
         (pk):
           identity: false
-        type: ProductProductId
+        type: ProductId
       description:
         type: ProductDescription
       
@@ -139,10 +139,10 @@ types:
     description: |
       Base entity for generate.
     properties:
-      client_id:
+      id:
         (pk):
           identity: false
-        type: ClientClientId
+        type: ClientId
       name:
         type: ClientName
       age:

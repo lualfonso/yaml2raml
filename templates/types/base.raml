@@ -18,12 +18,12 @@ types:<%  @model_types.each do |name , type| %><% name = (name.gsub("*","").gsub
     description: |
       Base entity for generate.
     properties:
-      <% model.each do |name , type| %><%= name.gsub("*","").gsub("]","").gsub("[","").underscore %>:<% if name.include?("*")%>
+      <% model.each do |name , type| %><%= name.split(":").last %>:<% if name.include?("*")%>
         (pk):
           identity: <%=type.include?("identity")%><% end %><% if type.start_with?("ref:") %>
         (fk):
           table: <%= type.split(":")[1].split(".")[0].underscore if type.start_with?("ref:") %>
           column: <%=  type.split(":")[1].split(".")[1].underscore if type.start_with?("ref:") %><% end %>
-        type: <%= (entity+"_"+name.gsub("*","")).camelize %>
+        type: <%= (name.split(":").first.gsub("*","")) %>
       <% end %>
 <% end %>

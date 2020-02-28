@@ -4,17 +4,17 @@ microservice: [invoice,product]
 
 entities:
     invoice:
-        invoice_id*: number
+        id*: number
         date: date
-        client: ref:client.client_id
+        client: ref:client.id
         detail:
-            detail_id*: number
+            id*: number
             amount: number
     product:
-        product_id*: number
+        id*: number
         description: string
     client:
-        client_id*: number
+        id*: number
         name: string
         age: number
 
