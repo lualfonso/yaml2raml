@@ -3,21 +3,25 @@
 uses:
   base: ./base.raml
 types:
-  <%= @entities %>PutData:
+  InvoiceDetailsPutData:
     description:
     type: object
     properties:
       data:
-        type: <%= @entity %>Put
+        type: InvoiceDetailPut
 
-  <%= @entity %>Put:
+  InvoiceDetailPut:
     type: object
     description: |
       Example description of the object
     properties:
-      <% for attribute in @attributes %><%= attribute[:name].split(":").last %>:
-        type: base.<%= attribute[:name].split(":").first %>
-      <% end %>
+      invoice_id:
+        type: base.InvoiceId
+      id:
+        type: base.InvoiceDetailId
+      amount:
+        type: base.InvoiceDetailAmount
+      
     example:
       {
       }

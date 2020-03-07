@@ -1,0 +1,31 @@
+#%RAML 1.0 Library
+uses:
+  base: ./base.raml
+types:
+  ProductsGetData:
+    description: |
+      Wrapper for a collection of Product
+    type: object
+    properties:
+      data:
+        type: ProductGet[]
+  ProductGetData:
+    description: |
+            Wrapper for a collection of Product
+    type: object
+    properties:
+       data:
+        type: ProductGet
+
+
+  ProductGet:
+    type: object
+    description: |
+      Example description of the object.
+    properties:
+      id:
+        type: base.ProductId
+      description:
+        type: base.ProductDescription
+      
+    example:

@@ -1,0 +1,33 @@
+#%RAML 1.0 Library
+uses:
+  base: ./base.raml
+types:
+  ClientsGetData:
+    description: |
+      Wrapper for a collection of Client
+    type: object
+    properties:
+      data:
+        type: ClientGet[]
+  ClientGetData:
+    description: |
+            Wrapper for a collection of Client
+    type: object
+    properties:
+       data:
+        type: ClientGet
+
+
+  ClientGet:
+    type: object
+    description: |
+      Example description of the object.
+    properties:
+      id:
+        type: base.ClientId
+      name:
+        type: base.ClientName
+      age:
+        type: base.ClientAge
+      
+    example:

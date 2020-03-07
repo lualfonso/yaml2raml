@@ -1,133 +1,150 @@
 #%RAML 1.0 Library
 
 types:
-  PostId:
+  InvoiceId:
     description: |
-      Description of PostId.
+      Description of InvoiceId.
     type: number
     minimum: 1
     maximum: 9999999999    
     
-  PostTitle:
+  InvoiceDate:
     description: |
-      Description of PostTitle.
-    type: string
-    minLength: 0
-    maxLength: 9999999999
+      Description of InvoiceDate.
+    type: date
     
-  PostUser:
+  InvoiceClient:
     description: |
-      Description of PostUser.
-    type: UserId
+      Description of InvoiceClient.
+    type: ClientId
     
-  PostUserName:
+  Id:
     description: |
-      Description of PostUserName.
-    type: UserName
-    
-  PostUserAge:
-    description: |
-      Description of PostUserAge.
-    type: UserAge
-    
-  PostUserAddress:
-    description: |
-      Description of PostUserAddress.
-    type: UserAddress
-    
-  UserId:
-    description: |
-      Description of UserId.
+      Description of Id.
     type: number
     minimum: 1
     maximum: 9999999999    
     
-  UserAge:
+  InvoiceDetailId:
     description: |
-      Description of UserAge.
+      Description of InvoiceDetailId.
     type: number
     minimum: 1
     maximum: 9999999999    
     
-  UserName:
+  InvoiceDetailAmount:
     description: |
-      Description of UserName.
-    type: string
-    minLength: 0
-    maxLength: 9999999999
-    
-  UserAddress:
-    description: |
-      Description of UserAddress.
-    type: string
-    minLength: 0
-    maxLength: 9999999999
-    
-  CityId:
-    description: |
-      Description of CityId.
+      Description of InvoiceDetailAmount.
     type: number
     minimum: 1
     maximum: 9999999999    
     
-  CityName:
+  ProductId:
     description: |
-      Description of CityName.
+      Description of ProductId.
+    type: number
+    minimum: 1
+    maximum: 9999999999    
+    
+  ProductDescription:
+    description: |
+      Description of ProductDescription.
     type: string
     minLength: 0
     maxLength: 9999999999
+    
+  ClientId:
+    description: |
+      Description of ClientId.
+    type: number
+    minimum: 1
+    maximum: 9999999999    
+    
+  ClientName:
+    description: |
+      Description of ClientName.
+    type: string
+    minLength: 0
+    maxLength: 9999999999
+    
+  ClientAge:
+    description: |
+      Description of ClientAge.
+    type: number
+    minimum: 1
+    maximum: 9999999999    
     
   
-  Post:
-    (entity): true
+  InvoiceDetail:
+    (table):
+      name: invoice_detail
     type: object
     description: |
       Base entity for generate.
     properties:
-      post_id:
-        (identity): true
-        (pk): true
-        type: PostId
-      post_title:
-        type: PostTitle
-      post_user:
-        type: PostUser
-      post_user_name:
-        type: PostUserName
-      post_user_age:
-        type: PostUserAge
-      post_user_address:
-        type: PostUserAddress
+      invoice_id:
+        (pk):
+          identity: false
+        (fk):
+          table: invoice
+          column: id
+        type: InvoiceId
+      id:
+        (pk):
+          identity: false
+        type: InvoiceDetailId
+      amount:
+        type: InvoiceDetailAmount
       
 
-  User:
-    (entity): true
+  Invoice:
+    (table):
+      name: invoice
     type: object
     description: |
       Base entity for generate.
     properties:
-      user_id:
-        (identity): true
-        (pk): true
-        type: UserId
-      user_age:
-        type: UserAge
-      user_name:
-        type: UserName
-      user_address:
-        type: UserAddress
+      id:
+        (pk):
+          identity: false
+        type: InvoiceId
+      date:
+        type: InvoiceDate
+      client:
+        (fk):
+          table: client
+          column: id
+        type: InvoiceClient
       
 
-  City:
-    (entity): true
+  Product:
+    (table):
+      name: product
     type: object
     description: |
       Base entity for generate.
     properties:
-      city_id:
-        (identity): true
-        (pk): true
-        type: CityId
-      city_name:
-        type: CityName
+      id:
+        (pk):
+          identity: false
+        type: ProductId
+      description:
+        type: ProductDescription
+      
+
+  Client:
+    (table):
+      name: client
+    type: object
+    description: |
+      Base entity for generate.
+    properties:
+      id:
+        (pk):
+          identity: false
+        type: ClientId
+      name:
+        type: ClientName
+      age:
+        type: ClientAge
       

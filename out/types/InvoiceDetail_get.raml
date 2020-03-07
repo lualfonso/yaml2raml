@@ -1,0 +1,27 @@
+#%RAML 1.0 Library
+
+uses:
+  base: ./base.raml
+types:
+  InvoiceDetailGetData:
+    description: |
+      One InvoiceDetail
+    type: object
+    properties:
+      data:
+        type: InvoiceDetailGet
+
+  InvoiceDetailGet:
+    type: object
+    description: |
+      Example description of the object.
+    properties:
+      invoice_id:
+        type: base.InvoiceId
+      id:
+        type: base.InvoiceDetailId
+      amount:
+        type: base.InvoiceDetailAmount
+      
+    example:
+      {}

@@ -3,21 +3,23 @@
 uses:
   base: ./base.raml
 types:
-  <%= @entities %>PutData:
+  ProductsPutData:
     description:
     type: object
     properties:
       data:
-        type: <%= @entity %>Put
+        type: ProductPut
 
-  <%= @entity %>Put:
+  ProductPut:
     type: object
     description: |
       Example description of the object
     properties:
-      <% for attribute in @attributes %><%= attribute[:name].split(":").last %>:
-        type: base.<%= attribute[:name].split(":").first %>
-      <% end %>
+      id:
+        type: base.ProductId
+      description:
+        type: base.ProductDescription
+      
     example:
       {
       }

@@ -17,7 +17,7 @@ mediaType: application/json
 protocols:
   - HTTP
   - HTTPS
-baseUri: 'http://{host}:{port}/localhost/Users/{version}'
+baseUri: 'http://{host}:{port}/localhost/Clients/{version}'
 
 baseUriParameters:
   host:
@@ -29,19 +29,25 @@ uses:
   filterType: ./traits/filter_type.raml
   errorWarning: ./libraries/error_warning.raml
   
-  PostsGet: ./types/Posts_get.raml
-  PostGet: ./types/Post_get.raml
-  PostsPost: ./types/Posts_post.raml
-  PostsPostId: ./types/Posts_postId.raml
-  PostsPut: ./types/Posts_put.raml
-  PostsPutId: ./types/Posts_putId.raml
+  InvoiceDetailsGet: ./types/InvoiceDetails_get.raml
+  InvoiceDetailGet: ./types/InvoiceDetail_get.raml
+  InvoiceDetailsPost: ./types/InvoiceDetails_post.raml
+  InvoiceDetailsPut: ./types/InvoiceDetails_put.raml
   
-  UsersGet: ./types/Users_get.raml
-  UserGet: ./types/User_get.raml
-  UsersPost: ./types/Users_post.raml
-  UsersPostId: ./types/Users_postId.raml
-  UsersPut: ./types/Users_put.raml
-  UsersPutId: ./types/Users_putId.raml
+  InvoicesGet: ./types/Invoices_get.raml
+  InvoiceGet: ./types/Invoice_get.raml
+  InvoicesPost: ./types/Invoices_post.raml
+  InvoicesPut: ./types/Invoices_put.raml
+  
+  ProductsGet: ./types/Products_get.raml
+  ProductGet: ./types/Product_get.raml
+  ProductsPost: ./types/Products_post.raml
+  ProductsPut: ./types/Products_put.raml
+  
+  ClientsGet: ./types/Clients_get.raml
+  ClientGet: ./types/Client_get.raml
+  ClientsPost: ./types/Clients_post.raml
+  ClientsPut: ./types/Clients_put.raml
   
 
   sortable: ./traits/sortable.raml
@@ -55,14 +61,302 @@ resourceTypes:
   simple_colleccion: !include resourceTypesMCS/simple_collection.raml
   static_collection: !include resourceTypesMCS/static_collection.raml
   item: !include resourceTypesMCS/item.raml
+   
+/invoices:
+  (table): 
+    name: base.Invoice
+  type: { simple_colleccion: { "baseUri": 'http://{host}:{port}/localhost/Invoices/{version}' } }
+  description: |
+    
+  get:
+    description: |
+    
+  
+    is:
+      [
+        filterType.TextContains: {attribute : name, required: false},
+        
+        sortable.SortCriteria: {fields: contact_date_time},
+        simplifiable.SimplificationCriteria: {fields : client_id | contact_date | reference},
+        paginatedContent.PaginatedContent
+      ]
+    responses:
+      200:
+        description: |
+          The request was successfully
+        body:
+          application/json:
+            type: InvoicesGet.InvoicesGetData
+
+
+  post:
+      body:
+          application/json:
+            description:  Customer request to create
+            type: InvoicesPost.InvoicesPostData
+      responses:
+       201:
+         description: |
+            The request was accepted.
+         body:
+          application/json:
+                  type: InvoiceGet.InvoiceGetData
+       405:
+         description: |
+            Invalid Parameters
+       409:
+         description: |
+            There is already a transfer request created with the channel reference number
+
+  /{invoice_id}:
+    type:  { item : { "resourceId" : 'invoice_id' } }
+    (table):
+      name: base.Invoice
+    get:
+      description: |
+        Gets the request associated with identified as part the url.
+      responses:
+        200:
+          description: |
+            Invoices Found
+          body:
+            application/json:
+              type:  InvoiceGet.InvoiceGetData
+        400:
+          description: |
+            the request has an incorrect format
+        404:
+          description: |
+              Resource not found
+    put:
+      description: |
+        Update Invoices
+      body:
+          application/json:
+            type: InvoicesPut.InvoicesPutData
+      responses:
+        200:
+          description: |
+            The request was update successfully
+          body:
+            application/json:
+              type:  InvoiceGet.InvoiceGetData
+        400:
+          description: |
+              The request has an incorrect format
+
+    delete:
+      description: |
+              Request to remove Customers
+      responses:
+        200:
+          description:  |
+              The request has bee successfull
+        404:
+          description: |
+              There is no transfer request associated with the specified identifier
+   
+  /details:
+    (table): 
+      name: base.InvoiceDetail
+    type: { simple_colleccion: { "baseUri": 'http://{host}:{port}/localhost/InvoiceDetails/{version}' } }
+    description: |
+      
+    get:
+      description: |
+      
+    
+      is:
+        [
+          filterType.TextContains: {attribute : name, required: false},
+          
+          sortable.SortCriteria: {fields: contact_date_time},
+          simplifiable.SimplificationCriteria: {fields : client_id | contact_date | reference},
+          paginatedContent.PaginatedContent
+        ]
+      responses:
+        200:
+          description: |
+            The request was successfully
+          body:
+            application/json:
+              type: InvoiceDetailsGet.InvoiceDetailsGetData
+
+
+    post:
+        body:
+            application/json:
+              description:  Customer request to create
+              type: InvoiceDetailsPost.InvoiceDetailsPostData
+        responses:
+          201:
+            description: |
+                The request was accepted.
+            body:
+              application/json:
+                      type: InvoiceDetailGet.InvoiceDetailGetData
+          405:
+            description: |
+                Invalid Parameters
+          409:
+            description: |
+                There is already a transfer request created with the channel reference number
+
+    /{invoice_detail_id}:
+      type:  { item : { "resourceId" : 'invoice_detail_id' } }
+      (table):
+        name: base.InvoiceDetail
+      get:
+        description: |
+          Gets the request associated with identified as part the url.
+        responses:
+          200:
+            description: |
+              InvoiceDetails Found
+            body:
+              application/json:
+                type:  InvoiceDetailGet.InvoiceDetailGetData
+          400:
+            description: |
+              the request has an incorrect format
+          404:
+            description: |
+                Resource not found
+      put:
+        description: |
+          Update InvoiceDetails
+        body:
+            application/json:
+              type: InvoiceDetailsPut.InvoiceDetailsPutData
+        responses:
+          200:
+            description: |
+              The request was update successfully
+            body:
+              application/json:
+                type:  InvoiceDetailGet.InvoiceDetailGetData
+          400:
+            description: |
+                The request has an incorrect format
+
+      delete:
+        description: |
+                Request to remove Customers
+        responses:
+          200:
+            description:  |
+                The request has bee successfull
+          404:
+            description: |
+                There is no transfer request associated with the specified identifier
+  
+
+  
+/products:
+  (table): 
+    name: base.Product
+  type: { simple_colleccion: { "baseUri": 'http://{host}:{port}/localhost/Products/{version}' } }
+  description: |
+    
+  get:
+    description: |
+    
+  
+    is:
+      [
+        filterType.TextContains: {attribute : name, required: false},
+        
+        sortable.SortCriteria: {fields: contact_date_time},
+        simplifiable.SimplificationCriteria: {fields : client_id | contact_date | reference},
+        paginatedContent.PaginatedContent
+      ]
+    responses:
+      200:
+        description: |
+          The request was successfully
+        body:
+          application/json:
+            type: ProductsGet.ProductsGetData
+
+
+  post:
+      body:
+          application/json:
+            description:  Customer request to create
+            type: ProductsPost.ProductsPostData
+      responses:
+       201:
+         description: |
+            The request was accepted.
+         body:
+          application/json:
+                  type: ProductGet.ProductGetData
+       405:
+         description: |
+            Invalid Parameters
+       409:
+         description: |
+            There is already a transfer request created with the channel reference number
+
+  /{product_id}:
+    type:  { item : { "resourceId" : 'product_id' } }
+    (table):
+      name: base.Product
+    get:
+      description: |
+        Gets the request associated with identified as part the url.
+      responses:
+        200:
+          description: |
+            Products Found
+          body:
+            application/json:
+              type:  ProductGet.ProductGetData
+        400:
+          description: |
+            the request has an incorrect format
+        404:
+          description: |
+              Resource not found
+    put:
+      description: |
+        Update Products
+      body:
+          application/json:
+            type: ProductsPut.ProductsPutData
+      responses:
+        200:
+          description: |
+            The request was update successfully
+          body:
+            application/json:
+              type:  ProductGet.ProductGetData
+        400:
+          description: |
+              The request has an incorrect format
+
+    delete:
+      description: |
+              Request to remove Customers
+      responses:
+        200:
+          description:  |
+              The request has bee successfull
+        404:
+          description: |
+              There is no transfer request associated with the specified identifier
  
-/posts:
-  (entity): base.Post
-  type: { simple_colleccion: { "baseUri": 'http://{host}:{port}/localhost/Posts/{version}' } }
+
+  
+/clients:
+  (table): 
+    name: base.Client
+  type: { simple_colleccion: { "baseUri": 'http://{host}:{port}/localhost/Clients/{version}' } }
   description: |
     
   get:
     description: |
+    
   
     is:
       [
@@ -78,21 +372,21 @@ resourceTypes:
           The request was successfully
         body:
           application/json:
-            type: PostsGet.PostsGetData
+            type: ClientsGet.ClientsGetData
 
 
   post:
       body:
           application/json:
             description:  Customer request to create
-            type: PostsPost.PostsPostData
+            type: ClientsPost.ClientsPostData
       responses:
        201:
          description: |
             The request was accepted.
          body:
           application/json:
-                  type: PostGet.PostGetData
+                  type: ClientGet.ClientGetData
        405:
          description: |
             Invalid Parameters
@@ -100,19 +394,20 @@ resourceTypes:
          description: |
             There is already a transfer request created with the channel reference number
 
-  /{post_id}:
-    type:  { item : { "resourceId" : 'post_id' } }
-    (entity): base.Post
+  /{client_id}:
+    type:  { item : { "resourceId" : 'client_id' } }
+    (table):
+      name: base.Client
     get:
       description: |
         Gets the request associated with identified as part the url.
       responses:
         200:
           description: |
-            Posts Found
+            Clients Found
           body:
             application/json:
-              type:  PostGet.PostGetData
+              type:  ClientGet.ClientGetData
         400:
           description: |
             the request has an incorrect format
@@ -121,17 +416,17 @@ resourceTypes:
               Resource not found
     put:
       description: |
-        Update Posts
+        Update Clients
       body:
           application/json:
-            type: PostsPut.PostsPutData
+            type: ClientsPut.ClientsPutData
       responses:
         200:
           description: |
             The request was update successfully
           body:
             application/json:
-              type:  PostGet.PostGetData
+              type:  ClientGet.ClientGetData
         400:
           description: |
               The request has an incorrect format
@@ -146,94 +441,5 @@ resourceTypes:
         404:
           description: |
               There is no transfer request associated with the specified identifier
+ 
 
-/users:
-  (entity): base.User
-  type: { simple_colleccion: { "baseUri": 'http://{host}:{port}/localhost/Users/{version}' } }
-  description: |
-    
-  get:
-    description: |
-  
-    is:
-      [
-        filterType.TextContains: {attribute : name, required: false},
-        
-        sortable.SortCriteria: {fields: contact_date_time},
-        simplifiable.SimplificationCriteria: {fields : client_id | contact_date | reference},
-        paginatedContent.PaginatedContent
-      ]
-    responses:
-      200:
-        description: |
-          The request was successfully
-        body:
-          application/json:
-            type: UsersGet.UsersGetData
-
-
-  post:
-      body:
-          application/json:
-            description:  Customer request to create
-            type: UsersPost.UsersPostData
-      responses:
-       201:
-         description: |
-            The request was accepted.
-         body:
-          application/json:
-                  type: UserGet.UserGetData
-       405:
-         description: |
-            Invalid Parameters
-       409:
-         description: |
-            There is already a transfer request created with the channel reference number
-
-  /{user_id}:
-    type:  { item : { "resourceId" : 'user_id' } }
-    (entity): base.User
-    get:
-      description: |
-        Gets the request associated with identified as part the url.
-      responses:
-        200:
-          description: |
-            Users Found
-          body:
-            application/json:
-              type:  UserGet.UserGetData
-        400:
-          description: |
-            the request has an incorrect format
-        404:
-          description: |
-              Resource not found
-    put:
-      description: |
-        Update Users
-      body:
-          application/json:
-            type: UsersPut.UsersPutData
-      responses:
-        200:
-          description: |
-            The request was update successfully
-          body:
-            application/json:
-              type:  UserGet.UserGetData
-        400:
-          description: |
-              The request has an incorrect format
-
-    delete:
-      description: |
-              Request to remove Customers
-      responses:
-        200:
-          description:  |
-              The request has bee successfull
-        404:
-          description: |
-              There is no transfer request associated with the specified identifier
