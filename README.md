@@ -18,11 +18,8 @@ This is a test project in pure ruby.
   
     ruby yaml2raml -f example.yml
     
-The result RAML can be use to genere Spring services
-
-=======
 The result RAML can be use to genere Spring services [raml2mcs](https://github.com/lualfonso/raml2mcs)
->>>>>>> feature/entities_details
+
 # To Do List
 -   Restructure project code with best practices.
 -   Relationship one to many, many to many.
