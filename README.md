@@ -17,7 +17,7 @@ gem install activesupport -v 5.0.0
     
   Command  
   
-    ruby yaml2raml -f example.yml
+    ruby yaml2raml.rb -f example.yml
     
 The result RAML can be use to genere Spring services [raml2mcs](https://github.com/lualfonso/raml2mcs)
 
