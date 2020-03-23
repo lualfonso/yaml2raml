@@ -12,7 +12,6 @@ This is a test project in pure ruby.
             name: string
             address: string
     microservice: [post,user] 
-<<<<<<< HEAD
     
   Command  
   
