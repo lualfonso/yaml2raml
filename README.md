@@ -1,5 +1,7 @@
 # yaml2raml
-This is a test project in pure ruby. 
+This is a test project in ruby. 
+### Required
+gem install activesupport -v 5.0.0
 ##  Example YAML
 ### example.yaml
 
