@@ -1,5 +1,7 @@
 # yaml2raml
-This is a test project in pure ruby. 
+This is a test project in ruby. 
+### Required
+gem install activesupport -v 5.0.0
 ##  Example YAML
 ### example.yaml
 
@@ -15,7 +17,7 @@ This is a test project in pure ruby.
     
   Command  
   
-    ruby yaml2raml -f example.yml
+    ruby yaml2raml.rb -f example.yml
     
 The result RAML can be use to genere Spring services [raml2mcs](https://github.com/lualfonso/raml2mcs)
 
