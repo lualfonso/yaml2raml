@@ -115,12 +115,12 @@ def process_entities_types
     @file_yaml["entities"].each do |name, type|
         process_struc_types name, type, {}
     end
-    @model_types
+    p @model_types
 end
 
 def process_struc_types parm_name, parm_type, defaults
     defaults.each do |name, type|
-        @model_types[name] = type unless type.is_a?Hash
+    #    @model_types[name] = type unless type.is_a?Hash
     end
     parm_type.each do |name, type|
         @model_types[parm_name + "_" + name] = type unless type.is_a?Hash

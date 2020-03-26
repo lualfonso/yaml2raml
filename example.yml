@@ -4,18 +4,18 @@ microservice: [invoice,product]
 
 entities:
     invoice:
-        id*: number
+        id*: number minimum:0 maximum:1
         date: date
         client: ref:client.id
         detail:
             id*: number
-            amount: number
+            amount: number  minimum:0 multipleOf:0.01
     product:
         id*: number
         description: string
     client:
         id*: number
-        name: string
+        name: string minLength:0 maxLength:20
         age: number
 
 

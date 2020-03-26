@@ -5,5 +5,5 @@ default:
   description: "Example description of the document."
   version: v1
   mediaType: application/json
-  baseUri: localhost
+  baseUri: 
 

@@ -1,15 +1,17 @@
 #%RAML 1.0 Library
 
-types:<%  @model_types.each do |name , type| %><% name = (name.gsub("*","").gsub("[]"," ")).camelize %><% type = type.split(" ")[0] %>
+types:<%  @model_types.each do |name , type| %><% name = (name.gsub("*","").gsub("[]"," ")).camelize %><% typeRoot = type.split(" ")[0] %>
   <%= name %>:
     description: |
       Description of <%= name %>.
-    type: <%= type =  type.start_with?("ref:") ?(type.split(":")[1].split(".")[0]+"_"+type.split(":")[1].split(".")[1]).camelize : type %><% if type=="number" %>
-    minimum: 1
-    maximum: 9999999999    <% end %>
-    <% if type=="string" %>minLength: 0
-    maxLength: 9999999999
-    <% end %><% end %>
+    type: <%= typeRoot =  typeRoot.start_with?("ref:") ?(typeRoot.split(":")[1].split(".")[0]+"_"+typeRoot.split(":")[1].split(".")[1]).camelize : typeRoot %><% if typeRoot=="number" %>
+    <%= type.split(" ").select{|value| value.start_with?("minimum:")}.size != 0 ? type.split(" ").select{|value| value.start_with?("minimum:")}.first.to_s.sub(":",": ") : "minimum: 0"  %>
+    <%= type.split(" ").select{|value| value.start_with?("maximum:")}.size != 0 ? type.split(" ").select{|value| value.start_with?("maximum:")}.first.to_s.sub(":",": ") : "maximum: 99999999999"  %>
+    <%= type.split(" ").select{|value| value.start_with?("multipleOf:")}.first.to_s.sub(":",": ")%><% end %><% if typeRoot=="string" %>
+    <%= type.split(" ").select{|value| value.start_with?("minLength:")}.size != 0 ? type.split(" ").select{|value| value.start_with?("minLength:")}.first.to_s.sub(":",": ") : "minLength: 0"  %>
+    <%= type.split(" ").select{|value| value.start_with?("maxLength:")}.size != 0 ? type.split(" ").select{|value| value.start_with?("maxLength:")}.first.to_s.sub(":",": ") : "maxLength: 1024"  %>
+    <% end %>
+    <% end %>
   <%  @models.each do |entity, model| %>
   <%= entity.camelize %>:
     (table):
