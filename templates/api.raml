@@ -55,11 +55,10 @@ resourceTypes:
     
   get:
     description: |
-    
-  
+
     is:
-      [
-        <% for filter in filters %>filterType.<%= filter[:filterType] %>: {attribute : <%= filter[:attribute] %>, required: <%= filter[:required] %>},<% end %>
+      [<% for filter in sub_entity[:filters] %>
+        filterType.<%= filter[:filterType] %>: {attribute : <%= filter[:attribute] %>, required: <%= filter[:required] %>},<% end %>
         
         sortable.SortCriteria: {fields: contact_date_time},
         simplifiable.SimplificationCriteria: {fields : client_id | contact_date | reference},
@@ -146,15 +145,13 @@ resourceTypes:
       name: base.<%= parent + entity.capitalize()  %>
     type: { simple_colleccion: { "baseUri": 'http://{host}:{port}/<%= @baseUri %>/<%= entities %>/{version}' } }
     description: |
-      
+          
     get:
       description: |
       
-    
       is:
-        [
-          <% for filter in filters %>filterType.<%= filter[:filterType] %>: {attribute : <%= filter[:attribute] %>, required: <%= filter[:required] %>},<% end %>
-          
+        [[<% for filter in sub_entity[:filters] %>
+          filterType.<%= filter[:filterType] %>: {attribute : <%= filter[:attribute] %>, required: <%= filter[:required] %>},<% end %>
           sortable.SortCriteria: {fields: contact_date_time},
           simplifiable.SimplificationCriteria: {fields : client_id | contact_date | reference},
           paginatedContent.PaginatedContent

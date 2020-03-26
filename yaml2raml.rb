@@ -80,18 +80,33 @@ def _resources
     @resources = {}
 
     @file_yaml["entities"].each do |name, props|   
-       p @resources[name] = process_resources(name,props)
+       @resources[name] = process_resources(name,props)
     end
     @resources
 end
 def process_resources  name,props
         resource = {}  
+        filters = []
         pk = ""
         props.each do |type_name, type_props|
             pk = type_name if type_name.include?"*"
+            if !type_props.is_a?Hash
+                case type_props.split(" ")[0]
+                    when "number"
+                        filterType = "NumberEqualsTo"
+                    when "string"
+                        filterType = "TextContains"
+                    when "date"
+                        filterType = "DateRange"
+                    else
+                        filterType = "NumberEqualsTo"
+                end
+                filters.push ({attribute: (type_name.gsub("*","").gsub("[]","")), filterType: filterType, required: false})
+            end
+
             resource[type_name] = process_resources(type_name,type_props) if type_props.is_a?Hash
         end
-        {domain:resource,  pk:name +"_" + pk}
+        {domain:resource,  pk:name +"_" + pk, filters: filters}
 end
 def process_entities_struc parm_name, parm_type, properties
     properties_default = {}
@@ -115,7 +130,7 @@ def process_entities_types
     @file_yaml["entities"].each do |name, type|
         process_struc_types name, type, {}
     end
-    p @model_types
+    @model_types
 end
 
 def process_struc_types parm_name, parm_type, defaults
@@ -148,6 +163,7 @@ op.on("-f name") do |file|
         end
         render_types
     end
+
     render_api
     render_templates
 
