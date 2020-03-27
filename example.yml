@@ -5,8 +5,8 @@ microservice: [invoice,product]
 entities:
     invoice:
         id*: number minimum:0 maximum:1
-        date: date
-        client: ref:client.id
+        Date: date
+        ClientId: ref:client.id
         detail:
             id*: number
             amount: number  minimum:0 multipleOf:0.01

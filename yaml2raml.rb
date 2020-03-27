@@ -79,7 +79,7 @@ end
 def _resources
     @resources = {}
 
-    @file_yaml["entities"].each do |name, props|   
+    @file_yaml["entities"].each do |name, props|  
        @resources[name] = process_resources(name,props)
     end
     @resources
@@ -109,19 +109,18 @@ def process_resources  name,props
         {domain:resource,  pk:name +"_" + pk, filters: filters}
 end
 def process_entities_struc parm_name, parm_type, properties
+    
     properties_default = {}
     properties_default = properties_default.merge(properties)
     parm_type.select{|name, type| name.include?"*" }.each do |name, type|
         properties_default[(parm_name + "_" +name).gsub("[]","").camelize + ":"+ (parm_name + "_"+name).underscore.gsub("*","")] = "ref:#{parm_name}.#{name.gsub("*","")}" 
     end
     parm_type.each do |name, type|
-
         if type.is_a?Hash
             process_entities_struc((parm_name + "_" + name), type, properties_default) 
         else
-            properties[(parm_name + "_" +name).gsub("[]","").camelize + ":" +name.underscore.gsub("*","")] = type 
+            properties[(parm_name + "_" +name.underscore).gsub("[]","").camelize + ":" +name.underscore.gsub("*","")] = type 
         end
-
     end
     @models[parm_name] = properties
 end
@@ -130,7 +129,7 @@ def process_entities_types
     @file_yaml["entities"].each do |name, type|
         process_struc_types name, type, {}
     end
-    @model_types
+    p @model_types
 end
 
 def process_struc_types parm_name, parm_type, defaults
@@ -158,6 +157,7 @@ op.on("-f name") do |file|
         props.each do |name , type|
             if !type.is_a?(Hash)
             @entity_pk = (entity+"_"+name.gsub("*","").gsub("[]","")).camelize if name.include?"*"
+           
             @attributes.push ({pk: name.include?("*")  , name: (name.gsub("*","").gsub("[]","")) , type: type.split(" ")[0], identity: type.include?("identity") })
             end
         end

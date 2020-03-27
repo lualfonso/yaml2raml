@@ -1,6 +1,6 @@
 #%RAML 1.0 Library
 
-types:<%  @model_types.each do |name , type| %><% name = (name.gsub("*","").gsub("[]"," ")).camelize %><% typeRoot = type.split(" ")[0] %>
+types:<%  @model_types.each do |name , type| %><% name = (name.gsub("*","").gsub("[]"," ")).underscore.camelize %><% typeRoot = type.split(" ")[0] %>
   <%= name %>:
     description: |
       Description of <%= name %>.
