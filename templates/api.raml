@@ -142,7 +142,7 @@ resourceTypes:
  <% sub_entity[:domain].each do |entity,sub_entity| %><%  entity_camelize = parent + entity.camelize %><%  entities = entity_camelize.pluralize %>  
   /<%= entity.pluralize %>:
     (table): 
-      name: base.<%= parent + entity_camelize  %>
+      name: base.<%= entity_camelize  %>
     type: { simple_colleccion: { "baseUri": 'http://{host}:{port}/<%= @baseUri %>/<%= entities %>/{version}' } }
     description: |
 
@@ -187,7 +187,7 @@ resourceTypes:
     /{<%= pk = parent.underscore + "_" + sub_entity[:pk].gsub("*","").underscore %>}:
       type:  { item : { "resourceId" : '<%= pk %>' } }
       (table):
-        name: base.<%= parent + entity_camelize  %>
+        name: base.<%= entity_camelize  %>
       get:
         description: |
           Gets the request associated with identified as part the url.

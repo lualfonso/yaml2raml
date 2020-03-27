@@ -5,7 +5,7 @@ microservice: [invoice,product]
 entities:
     invoice:
         id*: number minimum:0 maximum:1
-        Date: date
+        date: date
         ClientId: ref:client.id
         detail:
             id*: number
