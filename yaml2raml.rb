@@ -5,12 +5,9 @@ require 'yaml'
 require 'optparse'
 require 'fileutils'
 
-attributesTypes = { String: "TextContains" , Number: "NumberEqualsTo" , Date: ""}
 @attributes = []
-filters = []
-filters.push ( {filterType: "TextContains", attribute: "name", required: "false"})
 @dir_root = "out" 
-FileUtils.remove_dir(@dir_root) unless !Dir.exists?(@dir_root)
+FileUtils.remove_dir(@dir_root) unless !Dir.exist?(@dir_root)
 Dir.mkdir(@dir_root) unless Dir.exist?(@dir_root)
 def render_api
     config = YAML.load_file('config.yml')
@@ -22,6 +19,7 @@ def render_api
         @baseUri = @default["baseUri"] 
         @group = @default["group"]
     @domain = @default["domain"]
+
     files =  Dir.glob("templates/**/*.raml")
     
         files.select{|file| file.include?"api" }.each do |file|
@@ -80,7 +78,9 @@ def _resources
     @resources = {}
 
     @file_yaml["entities"].each do |name, props|  
-       @resources[name] = process_resources(name,props)
+        if  @file_yaml["microservice"].include? name
+            @resources[name] = process_resources(name,props)
+        end
     end
     @resources
 end
@@ -95,9 +95,9 @@ def process_resources  name,props
                     when "number"
                         filterType = "NumberEqualsTo"
                     when "string"
-                        filterType = "TextContains"
+                        filterType = "TextEqualsTo"
                     when "date"
-                        filterType = "DateRange"
+                        filterType = "DateEqualsTo"
                     else
                         filterType = "NumberEqualsTo"
                 end
@@ -147,7 +147,7 @@ op = OptionParser.new
 op.on("-f name") do |file|
     p "creando RAML para #{file}"
     @file_yaml = YAML.load_file(file) 
-    @artifact = @file_yaml["application"]["name"]
+    @application = @file_yaml["application"]
     process_entities
     process_entities_types
     @models.each do |entity, props|
@@ -161,7 +161,7 @@ op.on("-f name") do |file|
             @attributes.push ({pk: name.include?("*")  , name: (name.gsub("*","").gsub("[]","")) , type: type.split(" ")[0], identity: type.include?("identity") })
             end
         end
-        render_types
+           render_types
     end
 
     render_api

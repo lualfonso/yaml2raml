@@ -10,9 +10,10 @@ description: |
 
 version: <%= @version %>
 (project):
-    group: <%= @group %>
-    artifact: <%= @artifact.downcase %>
-    name: <%= @artifact.camelize %>
+    group: <%= @application["group"] %>
+    artifact: <%= @application["name"].to_s.downcase %>
+    name: <%= @application["name"].to_s.camelize %>
+    repositoryType: <%= @application["repositoryType"].to_s.camelize %>
 mediaType: <%= @mediaType %>
 protocols:
   - HTTP
@@ -58,7 +59,7 @@ resourceTypes:
 
     is:
       [<% for filter in sub_entity[:filters] %>
-        filterType.<%= filter[:filterType] %>: {attribute : <%= filter[:attribute] %>, required: <%= filter[:required] %>},<% end %>
+        filterType.<%= filter[:filterType] %>: {attribute : <%= filter[:attribute].underscore %>, required: <%= filter[:required] %>},<% end %>
         
         sortable.SortCriteria: {fields: contact_date_time},
         simplifiable.SimplificationCriteria: {fields : client_id | contact_date | reference},
@@ -151,7 +152,7 @@ resourceTypes:
       
       is:
         [<% for filter in sub_entity[:filters] %>
-          filterType.<%= filter[:filterType] %>: {attribute : <%= filter[:attribute] %>, required: <%= filter[:required] %>},<% end %>
+          filterType.<%= filter[:filterType] %>: {attribute : <%= filter[:attribute].underscore %>, required: <%= filter[:required] %>},<% end %>
           sortable.SortCriteria: {fields: contact_date_time},
           simplifiable.SimplificationCriteria: {fields : client_id | contact_date | reference},
           paginatedContent.PaginatedContent

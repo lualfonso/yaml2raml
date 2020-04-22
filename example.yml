@@ -1,21 +1,24 @@
 application:
     name: store
+    group: com.mcs
+    repositoryType: jpa
 microservice: [invoice,product]
 
 entities:
     invoice:
         id*: number minimum:0 maximum:1
-        date: date
-        ClientId: ref:client.id
-        detail:
-            id*: number
-            amount: number  minimum:0 multipleOf:0.01
+        date: date-only
+        client_id: ref:client.SKU
     product:
         id*: number
+        name: string
         description: string
+        stock: number
     client:
-        id*: number
-        name: string minLength:0 maxLength:20
+        SKU*: number identity
+        fistName: string 
+        lastName: string
+        birthDay: date-only
         age: number
 
 
